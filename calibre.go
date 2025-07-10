@@ -430,3 +430,135 @@ func parseIDList(idStr string) ([]int, error) {
 	
 	return ids, nil
 }
+
+// Remove removes books from the calibre database
+func (cw *CalibreWrapper) Remove(ids []int, permanent bool) error {
+	for _, id := range ids {
+		if id <= 0 {
+			return fmt.Errorf("invalid book ID: %d", id)
+		}
+	}
+
+	idStrs := make([]string, len(ids))
+	for i, id := range ids {
+		idStrs[i] = strconv.Itoa(id)
+	}
+
+	cmd := fmt.Sprintf("%s remove %s", cw.cdbWithLib, strings.Join(idStrs, ","))
+	if permanent {
+		cmd += " --permanent"
+	}
+
+	_, _, err := cw.run(cmd)
+	return err
+}
+
+// SetMetadata updates book metadata
+func (cw *CalibreWrapper) SetMetadata(id int, book Book) error {
+	if err := validateID(id); err != nil {
+		return err
+	}
+
+	// Check if book exists
+	existingBook, err := cw.GetBook(id)
+	if err != nil {
+		return err
+	}
+	if existingBook == nil {
+		return fmt.Errorf("book with ID %d does not exist", id)
+	}
+
+	cmd := fmt.Sprintf("%s set_metadata %d", cw.cdbWithLib, id)
+	cmd = cw.addUpdateFlags(cmd, book)
+
+	_, _, err = cw.run(cmd)
+	return err
+}
+
+// addUpdateFlags adds book metadata flags for set_metadata command
+func (cw *CalibreWrapper) addUpdateFlags(cmd string, book Book) string {
+	if len(book.Authors) > 0 {
+		authors := strings.Join(book.Authors, " & ")
+		cmd += fmt.Sprintf(" --field \"authors:%s\"", authors)
+	}
+	if book.Title != "" {
+		cmd += fmt.Sprintf(" --field \"title:%s\"", book.Title)
+	}
+	if book.AuthorSort != "" {
+		cmd += fmt.Sprintf(" --field \"author_sort:%s\"", book.AuthorSort)
+	}
+	if book.Comments != "" {
+		cmd += fmt.Sprintf(" --field \"comments:%s\"", book.Comments)
+	}
+	if book.Publisher != "" {
+		cmd += fmt.Sprintf(" --field \"publisher:%s\"", book.Publisher)
+	}
+	if book.PubDate != "" {
+		cmd += fmt.Sprintf(" --field \"pubdate:%s\"", book.PubDate)
+	}
+	if book.Rating != 0 {
+		cmd += fmt.Sprintf(" --field \"rating:%d\"", book.Rating)
+	}
+	if book.Series != "" {
+		cmd += fmt.Sprintf(" --field \"series:%s\"", book.Series)
+	}
+	if book.SeriesIndex != 0 {
+		cmd += fmt.Sprintf(" --field \"series_index:%f\"", book.SeriesIndex)
+	}
+	if len(book.Tags) > 0 {
+		tags := strings.Join(book.Tags, ",")
+		cmd += fmt.Sprintf(" --field \"tags:%s\"", tags)
+	}
+	if len(book.Languages) > 0 {
+		languages := strings.Join(book.Languages, ",")
+		cmd += fmt.Sprintf(" --field \"languages:%s\"", languages)
+	}
+	
+	// Handle identifiers
+	if len(book.Identifiers) > 0 {
+		identifierPairs := make([]string, 0, len(book.Identifiers))
+		for key, value := range book.Identifiers {
+			identifierPairs = append(identifierPairs, fmt.Sprintf("%s:%s", key, value))
+		}
+		identifiers := strings.Join(identifierPairs, ",")
+		cmd += fmt.Sprintf(" --field \"identifiers:%s\"", identifiers)
+	}
+
+	return cmd
+}
+
+// Export exports books from the calibre database to a directory
+func (cw *CalibreWrapper) Export(ids []int, exportsDir string, formats []string) error {
+	for _, id := range ids {
+		if err := validateID(id); err != nil {
+			return err
+		}
+	}
+
+	cmd := fmt.Sprintf("%s export --dont-write-opf --dont-save-cover --single-dir", cw.cdbWithLib)
+	
+	if exportsDir != "" {
+		cmd += fmt.Sprintf(" --to-dir=%s", exportsDir)
+	}
+
+	if formats != nil && len(formats) > 0 {
+		cmd += fmt.Sprintf(" --formats %s", strings.Join(formats, ","))
+	}
+
+	idStrs := make([]string, len(ids))
+	for i, id := range ids {
+		idStrs[i] = strconv.Itoa(id)
+	}
+	cmd += fmt.Sprintf(" %s", strings.Join(idStrs, " "))
+
+	_, stderr, err := cw.run(cmd)
+	if err != nil {
+		// Check for "No book with id" error
+		if strings.Contains(stderr, "No book with id") {
+			return fmt.Errorf("one or more books not found: %s", stderr)
+		}
+		return err
+	}
+
+	return nil
+}

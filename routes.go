@@ -1,6 +1,7 @@
 package main
 
 import (
+	"archive/zip"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -262,7 +263,7 @@ func (s *Server) handleAddEmptyBook(w http.ResponseWriter, r *http.Request) {
 // handleUpdateBook updates an existing book's metadata
 func (s *Server) handleUpdateBook(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	_, err := strconv.Atoi(vars["id"])
+	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		s.writeError(w, http.StatusBadRequest, "Invalid book ID")
 		return
@@ -290,46 +291,263 @@ func (s *Server) handleUpdateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// For now, return not implemented as the calibre wrapper doesn't have SetMetadata
-	s.writeError(w, http.StatusNotImplemented, "Update book not yet implemented")
+	// Update the book metadata
+	if err := s.calibre.SetMetadata(id, book); err != nil {
+		if strings.Contains(err.Error(), "does not exist") {
+			s.writeError(w, http.StatusNotFound, fmt.Sprintf("book %d does not exist", id))
+		} else {
+			s.writeError(w, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+
+	// Get the updated book and return it
+	updatedBook, err := s.calibre.GetBook(id)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response := map[string]*Book{"books": updatedBook}
+	s.writeJSON(w, http.StatusOK, response)
 }
 
 // handleDeleteBook deletes a book by ID
 func (s *Server) handleDeleteBook(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	_, err := strconv.Atoi(vars["id"])
+	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		s.writeError(w, http.StatusBadRequest, "Invalid book ID")
 		return
 	}
 
-	// For now, return not implemented as the calibre wrapper doesn't have Remove
-	s.writeError(w, http.StatusNotImplemented, "Delete book not yet implemented")
+	// Delete the book
+	if err := s.calibre.Remove([]int{id}, false); err != nil {
+		s.writeError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// Verify the book was deleted
+	book, err := s.calibre.GetBook(id)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if book != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("book %d was not deleted", id))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // handleDeleteBooks deletes multiple books by IDs
 func (s *Server) handleDeleteBooks(w http.ResponseWriter, r *http.Request) {
-	// For now, return not implemented
-	s.writeError(w, http.StatusNotImplemented, "Delete books not yet implemented")
+	// Parse IDs from query parameters
+	idStrings := r.URL.Query()["id"]
+	if len(idStrings) == 0 {
+		s.writeError(w, http.StatusBadRequest, "No book IDs provided")
+		return
+	}
+
+	var ids []int
+	
+	// Handle comma-separated IDs in a single parameter
+	if len(idStrings) == 1 && strings.Contains(idStrings[0], ",") {
+		parts := strings.Split(idStrings[0], ",")
+		for _, part := range parts {
+			id, err := strconv.Atoi(strings.TrimSpace(part))
+			if err != nil {
+				s.writeError(w, http.StatusBadRequest, fmt.Sprintf("Invalid book ID: %s", part))
+				return
+			}
+			ids = append(ids, id)
+		}
+	} else {
+		// Handle multiple separate parameters
+		for _, idStr := range idStrings {
+			id, err := strconv.Atoi(idStr)
+			if err != nil {
+				s.writeError(w, http.StatusBadRequest, fmt.Sprintf("Invalid book ID: %s", idStr))
+				return
+			}
+			ids = append(ids, id)
+		}
+	}
+
+	// Delete the books
+	if err := s.calibre.Remove(ids, false); err != nil {
+		s.writeError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// Verify the books were deleted
+	for _, id := range ids {
+		book, err := s.calibre.GetBook(id)
+		if err != nil {
+			s.writeError(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+		if book != nil {
+			s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("book %d was not deleted", id))
+			return
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // handleExportBook exports a single book
 func (s *Server) handleExportBook(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	_, err := strconv.Atoi(vars["id"])
+	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		s.writeError(w, http.StatusBadRequest, "Invalid book ID")
 		return
 	}
 
-	// For now, return not implemented as the calibre wrapper doesn't have Export
-	s.writeError(w, http.StatusNotImplemented, "Export book not yet implemented")
+	s.handleExportBooksCommon(w, r, []int{id})
 }
 
 // handleExportBooks exports multiple books
 func (s *Server) handleExportBooks(w http.ResponseWriter, r *http.Request) {
-	// For now, return not implemented
-	s.writeError(w, http.StatusNotImplemented, "Export books not yet implemented")
+	// Parse IDs from query parameters
+	idStrings := r.URL.Query()["id"]
+	if len(idStrings) == 0 {
+		s.writeError(w, http.StatusBadRequest, "No book IDs provided")
+		return
+	}
+
+	var ids []int
+	
+	// Handle comma-separated IDs in a single parameter
+	if len(idStrings) == 1 && strings.Contains(idStrings[0], ",") {
+		parts := strings.Split(idStrings[0], ",")
+		for _, part := range parts {
+			id, err := strconv.Atoi(strings.TrimSpace(part))
+			if err != nil {
+				s.writeError(w, http.StatusBadRequest, fmt.Sprintf("Invalid book ID: %s", part))
+				return
+			}
+			ids = append(ids, id)
+		}
+	} else {
+		// Handle multiple separate parameters
+		for _, idStr := range idStrings {
+			id, err := strconv.Atoi(idStr)
+			if err != nil {
+				s.writeError(w, http.StatusBadRequest, fmt.Sprintf("Invalid book ID: %s", idStr))
+				return
+			}
+			ids = append(ids, id)
+		}
+	}
+
+	s.handleExportBooksCommon(w, r, ids)
+}
+
+// handleExportBooksCommon handles the common export logic
+func (s *Server) handleExportBooksCommon(w http.ResponseWriter, r *http.Request, ids []int) {
+	// Create temporary directory for exports
+	exportDir, err := ioutil.TempDir("", "calibre-exports-")
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, "Failed to create temporary directory")
+		return
+	}
+	defer os.RemoveAll(exportDir)
+
+	// Export books
+	if err := s.calibre.Export(ids, exportDir, nil); err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			s.writeError(w, http.StatusNotFound, err.Error())
+		} else {
+			s.writeError(w, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+
+	// Check exported files
+	files, err := ioutil.ReadDir(exportDir)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, "Failed to read export directory")
+		return
+	}
+
+	// Filter for actual files (not directories)
+	var fileList []os.FileInfo
+	for _, file := range files {
+		if !file.IsDir() {
+			fileList = append(fileList, file)
+		}
+	}
+
+	if len(fileList) == 0 {
+		s.writeError(w, http.StatusInternalServerError, "No files exported")
+		return
+	}
+
+	if len(fileList) == 1 {
+		// Single file - send directly
+		file := fileList[0]
+		filePath := filepath.Join(exportDir, file.Name())
+		
+		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", file.Name()))
+		w.Header().Set("Content-Type", "application/octet-stream")
+		http.ServeFile(w, r, filePath)
+	} else {
+		// Multiple files - create zip
+		zipPath := filepath.Join(os.TempDir(), "exports.zip")
+		defer os.Remove(zipPath)
+
+		if err := s.createZip(exportDir, zipPath); err != nil {
+			s.writeError(w, http.StatusInternalServerError, "Failed to create zip file")
+			return
+		}
+
+		w.Header().Set("Content-Disposition", "attachment; filename=\"exports.zip\"")
+		w.Header().Set("Content-Type", "application/zip")
+		http.ServeFile(w, r, zipPath)
+	}
+}
+
+// createZip creates a zip file containing all files from the source directory
+func (s *Server) createZip(sourceDir, zipPath string) error {
+	zipFile, err := os.Create(zipPath)
+	if err != nil {
+		return err
+	}
+	defer zipFile.Close()
+
+	zipWriter := zip.NewWriter(zipFile)
+	defer zipWriter.Close()
+
+	files, err := ioutil.ReadDir(sourceDir)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		filePath := filepath.Join(sourceDir, file.Name())
+		fileContent, err := ioutil.ReadFile(filePath)
+		if err != nil {
+			return err
+		}
+
+		fileWriter, err := zipWriter.Create(file.Name())
+		if err != nil {
+			return err
+		}
+
+		if _, err := fileWriter.Write(fileContent); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // checkFiles validates and saves uploaded files
