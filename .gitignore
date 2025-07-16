@@ -12,3 +12,7 @@ exports/*
 calibre/*
 library/*
 *.ini
+
+# Go binaries
+calibre-rest
+calibre-rest-*
