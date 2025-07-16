@@ -1,64 +1,62 @@
-.PHONY: help all base dev upgrade check clean run test unittest build
+.PHONY: help build run test clean docker-build docker-run dev
 
 help:
 	@echo 'Usage:'
-	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' | sed -e 's/^/ /'
+	@echo '  make build     - Build the Go binary'
+	@echo '  make run       - Run the server in production mode'
+	@echo '  make dev       - Run the server in development mode'
+	@echo '  make test      - Run tests'
+	@echo '  make clean     - Clean build artifacts'
+	@echo '  make docker-build - Build Docker images'
+	@echo '  make docker-run   - Run with docker-compose'
 
-objects = $(wildcard *.in)
-outputs := $(objects:.in=.txt)
+# Build the Go binary
+build:
+	go build -o calibre-rest .
 
-## all: build all .txt files
-all: $(outputs)
+# Run in production mode
+run: build
+	./calibre-rest
 
-%.txt: %.in
-	pip-compile --verbose --generate-hashes --output-file $@ $<
+# Run in development mode
+dev: build
+	./calibre-rest --dev
 
-dev-requirements.txt: requirements.txt
-
-## base: build requirements.txt
-base: requirements.txt
-
-## dev: build dev-requirements.txt
-dev: dev-requirements.txt
-
-## pip.install: install all dependencies
-pip.install: $(outputs)
-	pip-sync --ask $(outputs)
-
-## pip.install-base: install base dependencies only
-pip.install-base: requirements.txt
-	pip-sync --ask requirements.txt
-
-## pip.upgrade: upgrade base dependencies only
-pip.upgrade: requirements.txt
-	pip-compile --upgrade --generate-hashes $<
-
-## check: check pip-tools installed
-check:
-	@if ! command -v pip-compile > /dev/null; then echo "pip-tools not installed!"; fi
-
-## clean: clean all *.txt files
-clean: check
-	- rm *.txt
-
-## run.dev: run Flask debug server
-run.dev:
-	python3 app.py --dev
-
-## run: run Gunicorn server
-run:
-	python3 app.py
-
-## test: run all tests
+# Run tests
 test:
-	pytest
+	go test -v
 
-## test: run unit tests only
-unittest:
-	pytest --ignore=tests/integration
+# Clean build artifacts
+clean:
+	rm -f calibre-rest
+	go clean
 
-%.build: docker/Dockerfile
-	docker build . -f $< -t ghcr.io/kencx/calibre_rest:$(version)-$* --target=$*
+# Build Docker images (Go version)
+docker-build:
+	docker build . -f docker/Dockerfile.go -t ghcr.io/kencx/calibre_rest:$(version)-go-app --target=app
+	docker build . -f docker/Dockerfile.go -t ghcr.io/kencx/calibre_rest:$(version)-go-calibre --target=calibre
 
-## build: build all Docker images
-build: app.build calibre.build
+# Run with docker-compose
+docker-run:
+	docker compose up -d app
+
+# Install Go dependencies
+deps:
+	go mod download
+	go mod tidy
+
+# Format Go code
+fmt:
+	go fmt ./...
+
+# Lint Go code (requires golangci-lint)
+lint:
+	golangci-lint run
+
+# Build for multiple platforms
+build-cross:
+	GOOS=linux GOARCH=amd64 go build -o calibre-rest-linux-amd64 .
+	GOOS=linux GOARCH=arm64 go build -o calibre-rest-linux-arm64 .
+	GOOS=darwin GOARCH=amd64 go build -o calibre-rest-darwin-amd64 .
+	GOOS=darwin GOARCH=arm64 go build -o calibre-rest-darwin-arm64 .
+	GOOS=windows GOARCH=amd64 go build -o calibre-rest-windows-amd64.exe .
