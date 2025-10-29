@@ -1,9 +1,11 @@
-# calibre-rest
+# calibre-rest (Go Version)
 
 calibre-rest wraps
 [calibredb](https://manual.calibre-ebook.com/generated/en/calibredb.html) to
 provide a simple REST API server for your [Calibre](https://calibre-ebook.com/)
 library.
+
+**Note: This has been converted from Python to Go while maintaining the same REST API interface.**
 
 ### Disclaimer
 
@@ -32,7 +34,7 @@ $ curl --get --data-urlencode "search=title:~^foo.*bar$" \
 $ curl -X POST -H "Content-Type:multipart/form-data" \
     --form "file=@foo.epub" http://localhost:5000/books
 
-# download ebook from library
+# download ebook from library (not yet implemented in Go version)
 $ curl http://localhost:5000/export/1 -o bar.epub
 ```
 
@@ -51,7 +53,7 @@ calibre-rest requires the following dependencies:
 
 - A Calibre library on the local filesystem or served by a [Calibre content
   server](https://manual.calibre-ebook.com/generated/en/calibre-server.html)
-- Python >3.7 but Python 3.11 is recommended.
+- Go 1.19+ (for building from source)
 - The `calibre` binary with the `calibredb` executable.
 - Calibre's system dependencies (on Linux):
 
@@ -124,11 +126,10 @@ To run calibre-rest on your local machine, Calibre and its dependencies must be 
 ```console
 # clone the repository
 $ git clone git@github.com:kencx/calibre_rest.git
-$ cd calibre_rest && python3 -m venv .venv
+$ cd calibre_rest
 
-# install Python dependencies
-$ source .venv/bin/activate
-$ python3 -m pip install -r requirements.txt
+# build the Go binary
+$ go build -o calibre-rest .
 
 # install calibre
 $ apt-get install xdg-utils, xz-utils, libopengl0, libegl1
@@ -157,20 +158,29 @@ $ docker compose up -d app
 or directly on your local machine:
 
 ```console
-$ python3 ./app.py -h
+$ ./calibre-rest -h
 
-usage: app.py [options]
+Usage: ./calibre-rest [options]
 
 Options:
-  -h, --help         show this help message and exit
-  -d, --dev          Start in dev/debug mode
-  -c, --calibre      Path to calibre binary directory
-  -l, --library      Path to calibre library
-  -u, --username     Calibre library username
-  -p, --password     Calibre library password
-  -b, --bind         Bind address HOST:PORT
-  -g, --log-level    Log level
-  -v, --version      Print version
+  -bind string
+        Bind address HOST:PORT
+  -calibre string
+        Path to calibre binary directory
+  -dev
+        Start in dev/debug mode
+  -help
+        Show help
+  -library string
+        Path to calibre library
+  -log-level string
+        Log level (DEBUG, INFO, WARNING, ERROR)
+  -password string
+        Calibre library password
+  -username string
+        Calibre library username
+  -version
+        Print version
 ```
 
 calibre-rest can access any local Calibre libraries or remote [Calibre content
@@ -188,7 +198,7 @@ The server can be configured with the following environment variables.
 | Env Variable    | Description    | Type    | Default    |
 |---------------- | --------------- | --------------- | --------------- |
 | `CALIBRE_REST_PATH`    | Path to `calibredb` executable    | string | `/opt/calibre/calibredb` |
-| `CALIBRE_REST_LIBRARY` | Path to calibre library   | string   | `./library`   |
+| `CALIBRE_REST_LIBRARY` | Path to calibre library   | string   | `/library`   |
 | `CALIBRE_REST_USERNAME` | Calibre library username  | string  |  |
 | `CALIBRE_REST_PASSWORD` | Calibre library password   | string  |  |
 | `CALIBRE_REST_LOG_LEVEL` | Log Level | string  | `INFO`   |
@@ -197,34 +207,58 @@ The server can be configured with the following environment variables.
 If running directly on your local machine, we can also use flags:
 
 ```console
-$ ./app.py --bind localhost:5000
+$ ./calibre-rest --bind localhost:5000
 ```
 
 ## Development
 
-calibre-rest is built with Python 3.11 and Flask. Calibre should be installed to
+calibre-rest is built with Go 1.19+ and uses the Gorilla Mux router. Calibre should be installed to
 facilitate testing.
 
 To contribute, clone the repository and [build from source](#build-from-source).
 
 ```console
-# install all dev dependencies
-$ make pip.install
+# build the application
+$ go build -o calibre-rest .
 
 # run the dev server
-$ make run.dev
+$ ./calibre-rest --dev
 
 # run tests
-$ make test
+$ go test -v
 ```
 
->**NOTE**: If using Python <=3.10, please compile your own `requirements.txt`
->with `pip-compile`.
+## Migration from Python
+
+This version maintains the same REST API interface as the Python version, so existing clients should continue to work without changes. The main differences are:
+
+- Built with Go instead of Python/Flask
+- No longer uses Gunicorn (Go has a built-in HTTP server)
+- Some endpoints are not yet fully implemented (marked as "not implemented")
+- Improved performance and lower memory usage
+- Single binary deployment
+
+## Current Implementation Status
+
+- [x] Basic HTTP server and routing
+- [x] Health endpoint (`GET /health`)
+- [x] Get single book (`GET /books/{id}`) 
+- [x] Get books with pagination (`GET /books`)
+- [x] Add book from file (`POST /books`)
+- [x] Add empty book (`POST /books/empty`)
+- [ ] Update book metadata (`PUT /books/{id}`) - marked as not implemented
+- [ ] Delete book (`DELETE /books/{id}`) - marked as not implemented
+- [ ] Export book (`GET /export/{id}`) - marked as not implemented
+- [x] Configuration management
+- [x] Docker support
+- [x] CLI interface
 
 ## Roadmap
 
 - [x] Support remote libraries
 - [x] Pagination
+- [ ] Complete all CRUD operations (update, delete)
+- [ ] Export functionality
 - [ ] TLS support
 - [ ] Authentication
 - [ ] Feature parity with `calibredb`
