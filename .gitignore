@@ -1,0 +1,17 @@
+# Binaries
+*.exe
+*.out
+*.o
+*.a
+
+# Build and cache
+bin/
+build/
+*.db
+*.log
+
+# Go
+/vendor/
+/.idea/
+/.vscode/
+.DS_Store
