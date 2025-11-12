@@ -104,7 +104,7 @@ def parse_cli_file(py_file: Path):
             and hasattr(node.func, "attr")
             and node.func.attr == "add_option"
         ):
-            opt = {"_file": py_file.name, "_lineno": node.lineno}
+            opt = {"_file": py_file.name, "_lineno": node.lineno, "_node": ast.unparse(node)}
             for kw in node.keywords:
                 key = kw.arg
                 opt[key] = eval_ast(kw.value)

@@ -6,6 +6,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 308,
+        "_node": "parser.add_option('-d', '--duplicates', action='store_true', default=False, help=_('Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the {} option takes precedence.').format('--automerge'))",
         "action": "store_true",
         "default": false,
         "help": "Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.",
@@ -17,6 +18,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 318,
+        "_node": "parser.add_option('-m', '--automerge', type='choice', choices=('disabled', 'ignore', 'overwrite', 'new_record'), default='disabled', help=_('If books with similar titles and authors are found, merge the incoming formats (files) automatically into existing book records. A value of \"ignore\" means duplicate formats are discarded. A value of \"overwrite\" means duplicate formats in the library are overwritten with the newly added files. A value of \"new_record\" means duplicate formats are placed into a new book record.'))",
         "type": "choice",
         "choices": "('disabled', 'ignore', 'overwrite', 'new_record')",
         "default": "disabled",
@@ -29,6 +31,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 331,
+        "_node": "parser.add_option('-e', '--empty', action='store_true', default=False, help=_('Add an empty book (a book with no formats)'))",
         "action": "store_true",
         "default": false,
         "help": "Add an empty book (a book with no formats)",
@@ -40,6 +43,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 338,
+        "_node": "parser.add_option('-t', '--title', default=None, help=_('Set the title of the added book(s)'))",
         "default": null,
         "help": "Set the title of the added book(s)",
         "flags": [
@@ -50,6 +54,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 341,
+        "_node": "parser.add_option('-a', '--authors', default=None, help=_('Set the authors of the added book(s)'))",
         "default": null,
         "help": "Set the authors of the added book(s)",
         "flags": [
@@ -60,6 +65,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 347,
+        "_node": "parser.add_option('-i', '--isbn', default=None, help=_('Set the ISBN of the added book(s)'))",
         "default": null,
         "help": "Set the ISBN of the added book(s)",
         "flags": [
@@ -70,6 +76,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 350,
+        "_node": "parser.add_option('-I', '--identifier', default=[], action='append', help=_('Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY'))",
         "default": "[]",
         "action": "append",
         "help": "Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY",
@@ -81,6 +88,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 357,
+        "_node": "parser.add_option('-T', '--tags', default=None, help=_('Set the tags of the added book(s)'))",
         "default": null,
         "help": "Set the tags of the added book(s)",
         "flags": [
@@ -91,6 +99,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 360,
+        "_node": "parser.add_option('-s', '--series', default=None, help=_('Set the series of the added book(s)'))",
         "default": null,
         "help": "Set the series of the added book(s)",
         "flags": [
@@ -101,6 +110,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 366,
+        "_node": "parser.add_option('-S', '--series-index', default=1.0, type=float, help=_('Set the series number of the added book(s)'))",
         "default": 1.0,
         "type": "float",
         "help": "Set the series number of the added book(s)",
@@ -112,6 +122,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 373,
+        "_node": "parser.add_option('-c', '--cover', default=None, help=_('Path to the cover to use for the added book'))",
         "default": null,
         "help": "Path to the cover to use for the added book",
         "flags": [
@@ -122,6 +133,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 379,
+        "_node": "parser.add_option('-l', '--languages', default=None, help=_('A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)'))",
         "default": null,
         "help": "A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)",
         "flags": [
@@ -132,6 +144,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 403,
+        "_node": "g.add_option('-1', '--one-book-per-directory', action='store_true', default=False, help=_('Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book'))",
         "action": "store_true",
         "default": false,
         "help": "Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book",
@@ -143,6 +156,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 412,
+        "_node": "g.add_option('-r', '--recurse', action='store_true', default=False, help=_('Process folders recursively'))",
         "action": "store_true",
         "default": false,
         "help": "Process folders recursively",
@@ -154,6 +168,7 @@
       {
         "_file": "cmd_add.py",
         "_lineno": 421,
+        "_node": "g.add_option(opt, action='callback', type='string', nargs=1, default=[], callback=filter_pat, dest='filters', callback_args=(action,), metavar=_('GLOB PATTERN'), help=help)",
         "action": "callback",
         "type": "string",
         "nargs": 1,
@@ -174,6 +189,7 @@
       {
         "_file": "cmd_add_custom_column.py",
         "_lineno": 33,
+        "_node": "parser.add_option('--is-multiple', default=False, action='store_true', help=_('This column stores tag like data (i.e. multiple comma separated values). Only applies if datatype is text.'))",
         "default": false,
         "action": "store_true",
         "help": "This column stores tag like data (i.e. multiple comma separated values). Only applies if datatype is text.",
@@ -184,6 +200,7 @@
       {
         "_file": "cmd_add_custom_column.py",
         "_lineno": 43,
+        "_node": "parser.add_option('--display', default='{}', help=_('A dictionary of options to customize how the data in this column will be interpreted. This is a JSON  string. For enumeration columns, use --display=\"{\\\\\"enum_values\\\\\":[\\\\\"val1\\\\\", \\\\\"val2\\\\\"]}\"\\nThere are many options that can go into the display variable.The options by column type are:\\ncomposite: composite_template, composite_sort, make_category,contains_html, use_decorations\\ndatetime: date_format\\nenumeration: enum_values, enum_colors, use_decorations\\nint, float: number_format\\ntext: is_names, use_decorations\\n\\nThe best way to find legal combinations is to create a custom column of the appropriate type in the GUI then look at the backup OPF for a book (ensure that a new OPF has been created since the column was added). You will see the JSON for the \"display\" for the new column in the OPF.'))",
         "default": "{}",
         "help": "A dictionary of options to customize how the data in this column will be interpreted. This is a JSON  string. For enumeration columns, use --display=\"{\\\"enum_values\\\":[\\\"val1\\\", \\\"val2\\\"]}\"\nThere are many options that can go into the display variable.The options by column type are:\ncomposite: composite_template, composite_sort, make_category,contains_html, use_decorations\ndatetime: date_format\nenumeration: enum_values, enum_colors, use_decorations\nint, float: number_format\ntext: is_names, use_decorations\n\nThe best way to find legal combinations is to create a custom column of the appropriate type in the GUI then look at the backup OPF for a book (ensure that a new OPF has been created since the column was added). You will see the JSON for the \"display\" for the new column in the OPF.",
         "flags": [
@@ -200,6 +217,7 @@
       {
         "_file": "cmd_add_format.py",
         "_lineno": 42,
+        "_node": "parser.add_option('--dont-replace', dest='replace', default=True, action='store_false', help=_('Do not replace the format if it already exists'))",
         "dest": "replace",
         "default": true,
         "action": "store_false",
@@ -211,6 +229,7 @@
       {
         "_file": "cmd_add_format.py",
         "_lineno": 49,
+        "_node": "parser.add_option('--as-extra-data-file', default=False, action='store_true', help=_('Add the file as an extra data file to the book, not an ebook format'))",
         "default": false,
         "action": "store_true",
         "help": "Add the file as an extra data file to the book, not an ebook format",
@@ -228,6 +247,7 @@
       {
         "_file": "cmd_backup_metadata.py",
         "_lineno": 31,
+        "_node": "parser.add_option('--all', default=False, action='store_true', help=_('Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.'))",
         "default": false,
         "action": "store_true",
         "help": "Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.",
@@ -245,6 +265,7 @@
       {
         "_file": "cmd_catalog.py",
         "_lineno": 58,
+        "_node": "parser.add_option('-i', '--ids', default=None, dest='ids', help=_('Comma-separated list of database IDs to catalog.\\nIf declared, --search is ignored.\\nDefault: all'))",
         "default": null,
         "dest": "ids",
         "help": "Comma-separated list of database IDs to catalog.\nIf declared, --search is ignored.\nDefault: all",
@@ -256,6 +277,7 @@
       {
         "_file": "cmd_catalog.py",
         "_lineno": 69,
+        "_node": "parser.add_option('-s', '--search', default=None, dest='search_text', help=_('Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual.\\nDefault: no filtering'))",
         "default": null,
         "dest": "search_text",
         "help": "Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual.\nDefault: no filtering",
@@ -267,6 +289,7 @@
       {
         "_file": "cmd_catalog.py",
         "_lineno": 81,
+        "_node": "parser.add_option('-v', '--verbose', default=False, action='store_true', dest='verbose', help=_('Show detailed output information. Useful for debugging'))",
         "default": false,
         "action": "store_true",
         "dest": "verbose",
@@ -279,6 +302,7 @@
       {
         "_file": "cmd_catalog.py",
         "_lineno": 29,
+        "_node": "p.add_option(option.option, default=option.default, dest=option.dest, action=option.action, help=option.help)",
         "default": "option.default",
         "dest": "option.dest",
         "action": "option.action",
@@ -287,6 +311,7 @@
       {
         "_file": "cmd_catalog.py",
         "_lineno": 37,
+        "_node": "p.add_option(option.option, default=option.default, dest=option.dest, help=option.help)",
         "default": "option.default",
         "dest": "option.dest",
         "help": "option.help"
@@ -301,6 +326,7 @@
       {
         "_file": "cmd_check_library.py",
         "_lineno": 33,
+        "_node": "parser.add_option('-c', '--csv', default=False, action='store_true', help=_('Output in CSV'))",
         "default": false,
         "action": "store_true",
         "help": "Output in CSV",
@@ -312,6 +338,7 @@
       {
         "_file": "cmd_check_library.py",
         "_lineno": 37,
+        "_node": "parser.add_option('-r', '--report', default=None, dest='report', help=_('Comma-separated list of reports.\\nDefault: all'))",
         "default": null,
         "dest": "report",
         "help": "Comma-separated list of reports.\nDefault: all",
@@ -323,6 +350,7 @@
       {
         "_file": "cmd_check_library.py",
         "_lineno": 46,
+        "_node": "parser.add_option('-e', '--ignore_extensions', default=None, dest='exts', help=_('Comma-separated list of extensions to ignore.\\nDefault: all'))",
         "default": null,
         "dest": "exts",
         "help": "Comma-separated list of extensions to ignore.\nDefault: all",
@@ -334,6 +362,7 @@
       {
         "_file": "cmd_check_library.py",
         "_lineno": 55,
+        "_node": "parser.add_option('-n', '--ignore_names', default=None, dest='names', help=_('Comma-separated list of names to ignore.\\nDefault: all'))",
         "default": null,
         "dest": "names",
         "help": "Comma-separated list of names to ignore.\nDefault: all",
@@ -345,6 +374,7 @@
       {
         "_file": "cmd_check_library.py",
         "_lineno": 63,
+        "_node": "parser.add_option('--vacuum-fts-db', default=False, action='store_true', help=_('Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.'))",
         "default": false,
         "action": "store_true",
         "help": "Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.",
@@ -368,6 +398,7 @@
       {
         "_file": "cmd_custom_columns.py",
         "_lineno": 28,
+        "_node": "parser.add_option('-d', '--details', default=False, action='store_true', help=_('Show details for each column.'))",
         "default": false,
         "action": "store_true",
         "help": "Show details for each column.",
@@ -386,6 +417,7 @@
       {
         "_file": "cmd_embed_metadata.py",
         "_lineno": 36,
+        "_node": "parser.add_option('-f', '--only-formats', action='append', default=[], help=_('Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.'))",
         "action": "append",
         "default": "[]",
         "help": "Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.",
@@ -404,6 +436,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 63,
+        "_node": "parser.add_option('--all', default=False, action='store_true', help=_('Export all books in database, ignoring the list of ids.'))",
         "default": false,
         "action": "store_true",
         "help": "Export all books in database, ignoring the list of ids.",
@@ -414,6 +447,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 69,
+        "_node": "parser.add_option('--to-dir', default='.', help=_('Export books to the specified folder. Default is') + ' %default')",
         "default": ".",
         "help": "_('Export books to the specified folder. Default is') + ' %default'",
         "flags": [
@@ -423,6 +457,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 76,
+        "_node": "parser.add_option('--single-dir', default=False, action='store_true', help=_('Export all books into a single folder'))",
         "default": false,
         "action": "store_true",
         "help": "Export all books into a single folder",
@@ -433,6 +468,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 82,
+        "_node": "parser.add_option('--progress', default=False, action='store_true', help=_('Report progress'))",
         "default": false,
         "action": "store_true",
         "help": "Report progress",
@@ -443,6 +479,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 92,
+        "_node": "parser.add_option(switch, default=True, action='store_false', help=opt.help + ' ' + _('Specifying this switch will turn this behavior off.'), dest=pref)",
         "default": true,
         "action": "store_false",
         "help": "opt.help + ' ' + _('Specifying this switch will turn this behavior off.')",
@@ -451,6 +488,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 105,
+        "_node": "parser.add_option(switch, default=opt.default, help=opt.help, dest=pref)",
         "default": "opt.default",
         "help": "opt.help",
         "dest": "pref"
@@ -458,6 +496,7 @@
       {
         "_file": "cmd_export.py",
         "_lineno": 110,
+        "_node": "parser.add_option(switch, default=False, action='store_true', help=opt.help)",
         "default": false,
         "action": "store_true",
         "help": "opt.help"
@@ -472,6 +511,7 @@
       {
         "_file": "cmd_fts_index.py",
         "_lineno": 78,
+        "_node": "parser.add_option('--wait-for-completion', default=False, action='store_true', help=_('Wait till all books are indexed, showing indexing progress periodically'))",
         "default": false,
         "action": "store_true",
         "help": "Wait till all books are indexed, showing indexing progress periodically",
@@ -482,6 +522,7 @@
       {
         "_file": "cmd_fts_index.py",
         "_lineno": 84,
+        "_node": "parser.add_option('--indexing-speed', default='', choices=('fast', 'slow', ''), help=_('The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.'))",
         "default": "",
         "choices": "('fast', 'slow', '')",
         "help": "The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.",
@@ -499,6 +540,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 63,
+        "_node": "parser.add_option('--include-snippets', default=False, action='store_true', help=_('Include snippets of the text surrounding each match. Note that this makes searching much slower.'))",
         "default": false,
         "action": "store_true",
         "help": "Include snippets of the text surrounding each match. Note that this makes searching much slower.",
@@ -509,6 +551,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 69,
+        "_node": "parser.add_option('--match-start-marker', default='\\x1b[31m', help=_('The marker used to indicate the start of a matched word inside a snippet'))",
         "default": "\u001b[31m",
         "help": "The marker used to indicate the start of a matched word inside a snippet",
         "flags": [
@@ -518,6 +561,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 74,
+        "_node": "parser.add_option('--match-end-marker', default='\\x1b[m', help=_('The marker used to indicate the end of a matched word inside a snippet'))",
         "default": "\u001b[m",
         "help": "The marker used to indicate the end of a matched word inside a snippet",
         "flags": [
@@ -527,6 +571,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 79,
+        "_node": "parser.add_option('--do-not-match-on-related-words', default=True, dest='use_stemming', action='store_false', help=_('Only match on exact words not related words. So correction will not match correcting.'))",
         "default": true,
         "dest": "use_stemming",
         "action": "store_false",
@@ -538,6 +583,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 86,
+        "_node": "parser.add_option('--restrict-to', default='', help=_('Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.'))",
         "default": "",
         "help": "Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.",
         "flags": [
@@ -547,6 +593,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 92,
+        "_node": "parser.add_option('--output-format', default='text', choices=('text', 'json'), help=_('The format to output the search results in. Either \"text\" for plain text or \"json\" for JSON output.'))",
         "default": "text",
         "choices": "('text', 'json')",
         "help": "The format to output the search results in. Either \"text\" for plain text or \"json\" for JSON output.",
@@ -557,6 +604,7 @@
       {
         "_file": "cmd_fts_search.py",
         "_lineno": 97,
+        "_node": "parser.add_option('--indexing-threshold', type=float, default=90.0, help=_('How much of the library must be indexed before searching is allowed, as a percentage. Defaults to 90'))",
         "type": "float",
         "default": 90.0,
         "help": "How much of the library must be indexed before searching is allowed, as a percentage. Defaults to 90",
@@ -574,6 +622,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 269,
+        "_node": "parser.add_option('-f', '--fields', default='title,authors', help=_('The fields to display when listing books in the database. Should be a comma separated list of fields.\\nAvailable fields: %s\\nDefault: %%default. The special field \"all\" can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating') % ', '.join(sorted(FIELDS)))",
         "default": "title,authors",
         "help": "_('The fields to display when listing books in the database. Should be a comma separated list of fields.\\nAvailable fields: %s\\nDefault: %%default. The special field \"all\" can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating') % ', '.join(sorted(FIELDS))",
         "flags": [
@@ -584,6 +633,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 283,
+        "_node": "parser.add_option('--sort-by', default=None, help=_('The field by which to sort the results. You can specify multiple fields by separating them with commas.\\nAvailable fields: {0}\\nDefault: {1}. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating').format(', '.join(sorted(FIELDS)), 'id'))",
         "default": null,
         "help": "The field by which to sort the results. You can specify multiple fields by separating them with commas.\nAvailable fields: ', '.join(sorted(FIELDS))\nDefault: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating",
         "flags": [
@@ -593,6 +643,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 294,
+        "_node": "parser.add_option('--ascending', default=False, action='store_true', help=_('Sort results in ascending order'))",
         "default": false,
         "action": "store_true",
         "help": "Sort results in ascending order",
@@ -603,6 +654,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 300,
+        "_node": "parser.add_option('-s', '--search', default=None, help=_('Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering.'))",
         "default": null,
         "help": "Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering.",
         "flags": [
@@ -613,6 +665,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 310,
+        "_node": "parser.add_option('-w', '--line-width', default=-1, type=int, help=_('The maximum width of a single line in the output. Defaults to detecting screen size.'))",
         "default": "-1",
         "type": "int",
         "help": "The maximum width of a single line in the output. Defaults to detecting screen size.",
@@ -624,6 +677,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 319,
+        "_node": "parser.add_option('--separator', default=' ', help=_('The string used to separate fields. Default is a space.'))",
         "default": " ",
         "help": "The string used to separate fields. Default is a space.",
         "flags": [
@@ -633,6 +687,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 324,
+        "_node": "parser.add_option('--prefix', default=None, help=_('The prefix for all file paths. Default is the absolute path to the library folder.'))",
         "default": null,
         "help": "The prefix for all file paths. Default is the absolute path to the library folder.",
         "flags": [
@@ -642,6 +697,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 331,
+        "_node": "parser.add_option('--limit', default=-1, type=int, help=_('The maximum number of results to display. Default: all'))",
         "default": "-1",
         "type": "int",
         "help": "The maximum number of results to display. Default: all",
@@ -652,6 +708,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 337,
+        "_node": "parser.add_option('--for-machine', default=False, action='store_true', help=_('Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.'))",
         "default": false,
         "action": "store_true",
         "help": "Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.",
@@ -662,6 +719,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 346,
+        "_node": "parser.add_option('--template', default=None, help=_('The template to run if \"{}\" is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None').format('template'))",
         "default": null,
         "help": "The template to run if \"template\" is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None",
         "flags": [
@@ -671,6 +729,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 352,
+        "_node": "parser.add_option('--template_file', '-t', default=None, help=_('Path to a file containing the template to run if \"{}\" is in the field list. Default: None').format('template'))",
         "default": null,
         "help": "Path to a file containing the template to run if \"template\" is in the field list. Default: None",
         "flags": [
@@ -681,6 +740,7 @@
       {
         "_file": "cmd_list.py",
         "_lineno": 359,
+        "_node": "parser.add_option('--template_heading', default='template', help=_('Heading for the template column. Default: %default. This option is ignored if the option {} is set').format('--for-machine'))",
         "default": "template",
         "help": "Heading for the template column. Default: %default. This option is ignored if the option --for-machine is set",
         "flags": [
@@ -697,6 +757,7 @@
       {
         "_file": "cmd_list_categories.py",
         "_lineno": 32,
+        "_node": "parser.add_option('-i', '--item_count', default=False, action='store_true', help=_('Output only the number of items in a category instead of the counts per item within the category'))",
         "default": false,
         "action": "store_true",
         "help": "Output only the number of items in a category instead of the counts per item within the category",
@@ -708,6 +769,7 @@
       {
         "_file": "cmd_list_categories.py",
         "_lineno": 42,
+        "_node": "parser.add_option('-c', '--csv', default=False, action='store_true', help=_('Output in CSV'))",
         "default": false,
         "action": "store_true",
         "help": "Output in CSV",
@@ -719,6 +781,7 @@
       {
         "_file": "cmd_list_categories.py",
         "_lineno": 45,
+        "_node": "parser.add_option('--dialect', default='excel', choices=csv.list_dialects(), help=_('The type of CSV file to produce. Choices: {}').format(', '.join(sorted(csv.list_dialects()))))",
         "default": "excel",
         "choices": "csv.list_dialects()",
         "help": "The type of CSV file to produce. Choices: ', '.join(sorted(csv.list_dialects()))",
@@ -729,6 +792,7 @@
       {
         "_file": "cmd_list_categories.py",
         "_lineno": 52,
+        "_node": "parser.add_option('-r', '--categories', default='', dest='report', help=_('Comma-separated list of category lookup names. Default: all'))",
         "default": "",
         "dest": "report",
         "help": "Comma-separated list of category lookup names. Default: all",
@@ -740,6 +804,7 @@
       {
         "_file": "cmd_list_categories.py",
         "_lineno": 60,
+        "_node": "parser.add_option('-w', '--width', default=-1, type=int, help=_('The maximum width of a single line in the output. Defaults to detecting screen size.'))",
         "default": "-1",
         "type": "int",
         "help": "The maximum width of a single line in the output. Defaults to detecting screen size.",
@@ -758,6 +823,7 @@
       {
         "_file": "cmd_remove.py",
         "_lineno": 31,
+        "_node": "p.add_option('--permanent', default=False, action='store_true', help=_('Do not use the {}').format(trash_name()))",
         "default": false,
         "action": "store_true",
         "help": "Do not use the trash_name()",
@@ -775,6 +841,7 @@
       {
         "_file": "cmd_remove_custom_column.py",
         "_lineno": 30,
+        "_node": "parser.add_option('-f', '--force', default=False, action='store_true', help=_('Do not ask for confirmation'))",
         "default": false,
         "action": "store_true",
         "help": "Do not ask for confirmation",
@@ -799,6 +866,7 @@
       {
         "_file": "cmd_restore_database.py",
         "_lineno": 35,
+        "_node": "parser.add_option('-r', '--really-do-it', default=False, action='store_true', help=_('Really do the recovery. The command will not run unless this option is specified.'))",
         "default": false,
         "action": "store_true",
         "help": "Really do the recovery. The command will not run unless this option is specified.",
@@ -823,6 +891,7 @@
       {
         "_file": "cmd_search.py",
         "_lineno": 36,
+        "_node": "parser.add_option('-l', '--limit', default=-1, type=int, help=_('The maximum number of results to return. Default is all results.'))",
         "default": "-1",
         "type": "int",
         "help": "The maximum number of results to return. Default is all results.",
@@ -841,6 +910,7 @@
       {
         "_file": "cmd_set_custom.py",
         "_lineno": 56,
+        "_node": "parser.add_option('-a', '--append', default=False, action='store_true', help=_('If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.'))",
         "default": false,
         "action": "store_true",
         "help": "If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.",
@@ -859,6 +929,7 @@
       {
         "_file": "cmd_set_metadata.py",
         "_lineno": 73,
+        "_node": "parser.add_option('-f', '--field', action='append', default=[], help=_('The field to set. Format is field_name:value, for example: {0} tags:tag1,tag2. Use {1} to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is {0} {2}. For boolean (yes/no) fields use true and false or yes and no.').format('--field', '--list-fields', 'identifiers:isbn:XXXX,doi:YYYYY'))",
         "action": "append",
         "default": "[]",
         "help": "The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.",
@@ -870,6 +941,7 @@
       {
         "_file": "cmd_set_metadata.py",
         "_lineno": 88,
+        "_node": "parser.add_option('-l', '--list-fields', action='store_true', default=False, help=_('List the metadata field names that can be used with the --field option'))",
         "action": "store_true",
         "default": false,
         "help": "List the metadata field names that can be used with the --field option",
@@ -888,6 +960,7 @@
       {
         "_file": "cmd_show_metadata.py",
         "_lineno": 33,
+        "_node": "parser.add_option('--as-opf', default=False, action='store_true', help=_('Print metadata in OPF form (XML)'))",
         "default": false,
         "action": "store_true",
         "help": "Print metadata in OPF form (XML)",
