@@ -1,16 +1,11 @@
 {
-  "__init__": {
-    "file": "__init__.py",
-    "usage_text": null,
-    "options": [],
-    "option_groups": []
-  },
   "cmd_add": {
     "file": "cmd_add.py",
     "usage_text": "%prog add [options] file1 file2 file3 ...\n\nAdd the specified files as books to the database. You can also specify folders, see\nthe folder related options below.\n",
     "options": [
       {
         "_file": "cmd_add.py",
+        "_lineno": 308,
         "action": "store_true",
         "default": false,
         "help": "Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.",
@@ -21,6 +16,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 318,
         "type": "choice",
         "choices": "('disabled', 'ignore', 'overwrite', 'new_record')",
         "default": "disabled",
@@ -32,6 +28,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 331,
         "action": "store_true",
         "default": false,
         "help": "Add an empty book (a book with no formats)",
@@ -42,6 +39,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 338,
         "default": null,
         "help": "Set the title of the added book(s)",
         "flags": [
@@ -51,6 +49,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 341,
         "default": null,
         "help": "Set the authors of the added book(s)",
         "flags": [
@@ -60,6 +59,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 347,
         "default": null,
         "help": "Set the ISBN of the added book(s)",
         "flags": [
@@ -69,6 +69,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 350,
         "default": "[]",
         "action": "append",
         "help": "Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY",
@@ -79,6 +80,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 357,
         "default": null,
         "help": "Set the tags of the added book(s)",
         "flags": [
@@ -88,6 +90,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 360,
         "default": null,
         "help": "Set the series of the added book(s)",
         "flags": [
@@ -97,6 +100,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 366,
         "default": 1.0,
         "type": "float",
         "help": "Set the series number of the added book(s)",
@@ -107,6 +111,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 373,
         "default": null,
         "help": "Path to the cover to use for the added book",
         "flags": [
@@ -116,6 +121,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 379,
         "default": null,
         "help": "A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)",
         "flags": [
@@ -125,6 +131,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 403,
         "action": "store_true",
         "default": false,
         "help": "Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book",
@@ -135,6 +142,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 412,
         "action": "store_true",
         "default": false,
         "help": "Process folders recursively",
@@ -145,6 +153,7 @@
       },
       {
         "_file": "cmd_add.py",
+        "_lineno": 421,
         "action": "callback",
         "type": "string",
         "nargs": 1,
@@ -164,6 +173,7 @@
     "options": [
       {
         "_file": "cmd_add_custom_column.py",
+        "_lineno": 33,
         "default": false,
         "action": "store_true",
         "help": "This column stores tag like data (i.e. multiple comma separated values). Only applies if datatype is text.",
@@ -173,6 +183,7 @@
       },
       {
         "_file": "cmd_add_custom_column.py",
+        "_lineno": 43,
         "default": "{}",
         "help": "A dictionary of options to customize how the data in this column will be interpreted. This is a JSON  string. For enumeration columns, use --display=\"{\\\"enum_values\\\":[\\\"val1\\\", \\\"val2\\\"]}\"\nThere are many options that can go into the display variable.The options by column type are:\ncomposite: composite_template, composite_sort, make_category,contains_html, use_decorations\ndatetime: date_format\nenumeration: enum_values, enum_colors, use_decorations\nint, float: number_format\ntext: is_names, use_decorations\n\nThe best way to find legal combinations is to create a custom column of the appropriate type in the GUI then look at the backup OPF for a book (ensure that a new OPF has been created since the column was added). You will see the JSON for the \"display\" for the new column in the OPF.",
         "flags": [
@@ -188,6 +199,7 @@
     "options": [
       {
         "_file": "cmd_add_format.py",
+        "_lineno": 42,
         "dest": "replace",
         "default": true,
         "action": "store_false",
@@ -198,6 +210,7 @@
       },
       {
         "_file": "cmd_add_format.py",
+        "_lineno": 49,
         "default": false,
         "action": "store_true",
         "help": "Add the file as an extra data file to the book, not an ebook format",
@@ -214,6 +227,7 @@
     "options": [
       {
         "_file": "cmd_backup_metadata.py",
+        "_lineno": 31,
         "default": false,
         "action": "store_true",
         "help": "Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.",
@@ -230,6 +244,7 @@
     "options": [
       {
         "_file": "cmd_catalog.py",
+        "_lineno": 58,
         "default": null,
         "dest": "ids",
         "help": "Comma-separated list of database IDs to catalog.\nIf declared, --search is ignored.\nDefault: all",
@@ -240,6 +255,7 @@
       },
       {
         "_file": "cmd_catalog.py",
+        "_lineno": 69,
         "default": null,
         "dest": "search_text",
         "help": "Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual.\nDefault: no filtering",
@@ -250,6 +266,7 @@
       },
       {
         "_file": "cmd_catalog.py",
+        "_lineno": 81,
         "default": false,
         "action": "store_true",
         "dest": "verbose",
@@ -261,6 +278,7 @@
       },
       {
         "_file": "cmd_catalog.py",
+        "_lineno": 29,
         "default": "option.default",
         "dest": "option.dest",
         "action": "option.action",
@@ -268,6 +286,7 @@
       },
       {
         "_file": "cmd_catalog.py",
+        "_lineno": 37,
         "default": "option.default",
         "dest": "option.dest",
         "help": "option.help"
@@ -281,6 +300,7 @@
     "options": [
       {
         "_file": "cmd_check_library.py",
+        "_lineno": 33,
         "default": false,
         "action": "store_true",
         "help": "Output in CSV",
@@ -291,6 +311,7 @@
       },
       {
         "_file": "cmd_check_library.py",
+        "_lineno": 37,
         "default": null,
         "dest": "report",
         "help": "Comma-separated list of reports.\nDefault: all",
@@ -301,6 +322,7 @@
       },
       {
         "_file": "cmd_check_library.py",
+        "_lineno": 46,
         "default": null,
         "dest": "exts",
         "help": "Comma-separated list of extensions to ignore.\nDefault: all",
@@ -311,6 +333,7 @@
       },
       {
         "_file": "cmd_check_library.py",
+        "_lineno": 55,
         "default": null,
         "dest": "names",
         "help": "Comma-separated list of names to ignore.\nDefault: all",
@@ -321,6 +344,7 @@
       },
       {
         "_file": "cmd_check_library.py",
+        "_lineno": 63,
         "default": false,
         "action": "store_true",
         "help": "Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.",
@@ -343,6 +367,7 @@
     "options": [
       {
         "_file": "cmd_custom_columns.py",
+        "_lineno": 28,
         "default": false,
         "action": "store_true",
         "help": "Show details for each column.",
@@ -360,6 +385,7 @@
     "options": [
       {
         "_file": "cmd_embed_metadata.py",
+        "_lineno": 36,
         "action": "append",
         "default": "[]",
         "help": "Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.",
@@ -377,6 +403,7 @@
     "options": [
       {
         "_file": "cmd_export.py",
+        "_lineno": 63,
         "default": false,
         "action": "store_true",
         "help": "Export all books in database, ignoring the list of ids.",
@@ -386,6 +413,7 @@
       },
       {
         "_file": "cmd_export.py",
+        "_lineno": 69,
         "default": ".",
         "help": "_('Export books to the specified folder. Default is') + ' %default'",
         "flags": [
@@ -394,6 +422,7 @@
       },
       {
         "_file": "cmd_export.py",
+        "_lineno": 76,
         "default": false,
         "action": "store_true",
         "help": "Export all books into a single folder",
@@ -403,6 +432,7 @@
       },
       {
         "_file": "cmd_export.py",
+        "_lineno": 82,
         "default": false,
         "action": "store_true",
         "help": "Report progress",
@@ -412,6 +442,7 @@
       },
       {
         "_file": "cmd_export.py",
+        "_lineno": 92,
         "default": true,
         "action": "store_false",
         "help": "opt.help + ' ' + _('Specifying this switch will turn this behavior off.')",
@@ -419,12 +450,14 @@
       },
       {
         "_file": "cmd_export.py",
+        "_lineno": 105,
         "default": "opt.default",
         "help": "opt.help",
         "dest": "pref"
       },
       {
         "_file": "cmd_export.py",
+        "_lineno": 110,
         "default": false,
         "action": "store_true",
         "help": "opt.help"
@@ -438,6 +471,7 @@
     "options": [
       {
         "_file": "cmd_fts_index.py",
+        "_lineno": 78,
         "default": false,
         "action": "store_true",
         "help": "Wait till all books are indexed, showing indexing progress periodically",
@@ -447,6 +481,7 @@
       },
       {
         "_file": "cmd_fts_index.py",
+        "_lineno": 84,
         "default": "",
         "choices": "('fast', 'slow', '')",
         "help": "The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.",
@@ -463,6 +498,7 @@
     "options": [
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 63,
         "default": false,
         "action": "store_true",
         "help": "Include snippets of the text surrounding each match. Note that this makes searching much slower.",
@@ -472,6 +508,7 @@
       },
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 69,
         "default": "\u001b[31m",
         "help": "The marker used to indicate the start of a matched word inside a snippet",
         "flags": [
@@ -480,6 +517,7 @@
       },
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 74,
         "default": "\u001b[m",
         "help": "The marker used to indicate the end of a matched word inside a snippet",
         "flags": [
@@ -488,6 +526,7 @@
       },
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 79,
         "default": true,
         "dest": "use_stemming",
         "action": "store_false",
@@ -498,6 +537,7 @@
       },
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 86,
         "default": "",
         "help": "Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.",
         "flags": [
@@ -506,6 +546,7 @@
       },
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 92,
         "default": "text",
         "choices": "('text', 'json')",
         "help": "The format to output the search results in. Either \"text\" for plain text or \"json\" for JSON output.",
@@ -515,6 +556,7 @@
       },
       {
         "_file": "cmd_fts_search.py",
+        "_lineno": 97,
         "type": "float",
         "default": 90.0,
         "help": "How much of the library must be indexed before searching is allowed, as a percentage. Defaults to 90",
@@ -531,6 +573,7 @@
     "options": [
       {
         "_file": "cmd_list.py",
+        "_lineno": 269,
         "default": "title,authors",
         "help": "_('The fields to display when listing books in the database. Should be a comma separated list of fields.\\nAvailable fields: %s\\nDefault: %%default. The special field \"all\" can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating') % ', '.join(sorted(FIELDS))",
         "flags": [
@@ -540,6 +583,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 283,
         "default": null,
         "help": "The field by which to sort the results. You can specify multiple fields by separating them with commas.\nAvailable fields: ', '.join(sorted(FIELDS))\nDefault: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating",
         "flags": [
@@ -548,6 +592,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 294,
         "default": false,
         "action": "store_true",
         "help": "Sort results in ascending order",
@@ -557,6 +602,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 300,
         "default": null,
         "help": "Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering.",
         "flags": [
@@ -566,6 +612,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 310,
         "default": "-1",
         "type": "int",
         "help": "The maximum width of a single line in the output. Defaults to detecting screen size.",
@@ -576,6 +623,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 319,
         "default": " ",
         "help": "The string used to separate fields. Default is a space.",
         "flags": [
@@ -584,6 +632,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 324,
         "default": null,
         "help": "The prefix for all file paths. Default is the absolute path to the library folder.",
         "flags": [
@@ -592,6 +641,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 331,
         "default": "-1",
         "type": "int",
         "help": "The maximum number of results to display. Default: all",
@@ -601,6 +651,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 337,
         "default": false,
         "action": "store_true",
         "help": "Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.",
@@ -610,6 +661,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 346,
         "default": null,
         "help": "The template to run if \"template\" is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None",
         "flags": [
@@ -618,6 +670,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 352,
         "default": null,
         "help": "Path to a file containing the template to run if \"template\" is in the field list. Default: None",
         "flags": [
@@ -627,6 +680,7 @@
       },
       {
         "_file": "cmd_list.py",
+        "_lineno": 359,
         "default": "template",
         "help": "Heading for the template column. Default: %default. This option is ignored if the option --for-machine is set",
         "flags": [
@@ -642,6 +696,7 @@
     "options": [
       {
         "_file": "cmd_list_categories.py",
+        "_lineno": 32,
         "default": false,
         "action": "store_true",
         "help": "Output only the number of items in a category instead of the counts per item within the category",
@@ -652,6 +707,7 @@
       },
       {
         "_file": "cmd_list_categories.py",
+        "_lineno": 42,
         "default": false,
         "action": "store_true",
         "help": "Output in CSV",
@@ -662,6 +718,7 @@
       },
       {
         "_file": "cmd_list_categories.py",
+        "_lineno": 45,
         "default": "excel",
         "choices": "csv.list_dialects()",
         "help": "The type of CSV file to produce. Choices: ', '.join(sorted(csv.list_dialects()))",
@@ -671,6 +728,7 @@
       },
       {
         "_file": "cmd_list_categories.py",
+        "_lineno": 52,
         "default": "",
         "dest": "report",
         "help": "Comma-separated list of category lookup names. Default: all",
@@ -681,6 +739,7 @@
       },
       {
         "_file": "cmd_list_categories.py",
+        "_lineno": 60,
         "default": "-1",
         "type": "int",
         "help": "The maximum width of a single line in the output. Defaults to detecting screen size.",
@@ -698,6 +757,7 @@
     "options": [
       {
         "_file": "cmd_remove.py",
+        "_lineno": 31,
         "default": false,
         "action": "store_true",
         "help": "Do not use the trash_name()",
@@ -714,6 +774,7 @@
     "options": [
       {
         "_file": "cmd_remove_custom_column.py",
+        "_lineno": 30,
         "default": false,
         "action": "store_true",
         "help": "Do not ask for confirmation",
@@ -737,6 +798,7 @@
     "options": [
       {
         "_file": "cmd_restore_database.py",
+        "_lineno": 35,
         "default": false,
         "action": "store_true",
         "help": "Really do the recovery. The command will not run unless this option is specified.",
@@ -760,6 +822,7 @@
     "options": [
       {
         "_file": "cmd_search.py",
+        "_lineno": 36,
         "default": "-1",
         "type": "int",
         "help": "The maximum number of results to return. Default is all results.",
@@ -777,6 +840,7 @@
     "options": [
       {
         "_file": "cmd_set_custom.py",
+        "_lineno": 56,
         "default": false,
         "action": "store_true",
         "help": "If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.",
@@ -794,6 +858,7 @@
     "options": [
       {
         "_file": "cmd_set_metadata.py",
+        "_lineno": 73,
         "action": "append",
         "default": "[]",
         "help": "The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.",
@@ -804,6 +869,7 @@
       },
       {
         "_file": "cmd_set_metadata.py",
+        "_lineno": 88,
         "action": "store_true",
         "default": false,
         "help": "List the metadata field names that can be used with the --field option",
@@ -821,6 +887,7 @@
     "options": [
       {
         "_file": "cmd_show_metadata.py",
+        "_lineno": 33,
         "default": false,
         "action": "store_true",
         "help": "Print metadata in OPF form (XML)",
@@ -829,80 +896,6 @@
         ]
       }
     ],
-    "option_groups": []
-  },
-  "extract_options": {
-    "file": "extract_options.py",
-    "usage_text": null,
-    "options": [],
-    "option_groups": []
-  },
-  "main": {
-    "file": "main.py",
-    "usage_text": "_('%%prog command [options] [arguments]\\n\\n%%prog is the command line interface to the calibre books database.\\n\\ncommand is one of:\\n  %s\\n\\nFor help on an individual command: %%prog command --help\\n') % '\\n  '.join(COMMANDS)",
-    "options": [
-      {
-        "_file": "main.py",
-        "default": null,
-        "help": "Path to the calibre library. Default is to use the path stored in the settings. You can also connect to a calibre Content server to perform actions on remote libraries. To do so use a URL of the form: http://hostname:port/#library_id for example, http://localhost:8080/#mylibrary. library_id is the library id of the library you want to connect to on the Content server. You can use the special library_id value of - to get a list of library ids available on the server. For details on how to setup access via a Content server, see localize_user_manual_link('https://manual.calibre-ebook.com/generated/en/calibredb.html').",
-        "flags": [
-          "--library-path",
-          "--with-library"
-        ]
-      },
-      {
-        "_file": "main.py",
-        "help": "show this help message and exit",
-        "action": "help",
-        "flags": [
-          "-h",
-          "--help"
-        ]
-      },
-      {
-        "_file": "main.py",
-        "help": "show program's version number and exit",
-        "action": "version",
-        "flags": [
-          "--version"
-        ]
-      },
-      {
-        "_file": "main.py",
-        "help": "Username for connecting to a calibre Content server",
-        "flags": [
-          "--username"
-        ]
-      },
-      {
-        "_file": "main.py",
-        "help": "Password for connecting to a calibre Content server. To read the password from standard input, use the special value: <stdin>. To read the password from a file, use: '<f:C:/path/to/file>' if iswindows else '<f:/path/to/file>' (i.e. <f: followed by the full path to the file and a trailing >). The angle brackets in the above are required, remember to escape them or use quotes for your shell.",
-        "flags": [
-          "--password"
-        ]
-      },
-      {
-        "_file": "main.py",
-        "type": "float",
-        "default": 120,
-        "help": "The timeout, in seconds, when connecting to a calibre library over the network. The default is two minutes.",
-        "flags": [
-          "--timeout"
-        ]
-      }
-    ],
-    "option_groups": []
-  },
-  "tests": {
-    "file": "tests.py",
-    "usage_text": null,
-    "options": [],
-    "option_groups": []
-  },
-  "utils": {
-    "file": "utils.py",
-    "usage_text": null,
-    "options": [],
     "option_groups": []
   }
 }

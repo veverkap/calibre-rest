@@ -69,7 +69,11 @@ def parse_cli_file(py_file: Path):
     for node in ast.walk(tree):
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "get_parser":
             if node.args:
-                command["usage_text"] = eval_ast(node.args[0])
+                text = eval_ast(node.args[0])
+                # check if text includes 'join('
+                if "join(" in text:
+                    print(f"⚠️  Warning: usage text in {py_file.name} includes 'join(', may be complex.")
+                command["usage_text"] = text
             break
 
     # Keep track of group variables
@@ -100,7 +104,7 @@ def parse_cli_file(py_file: Path):
             and hasattr(node.func, "attr")
             and node.func.attr == "add_option"
         ):
-            opt = {"_file": py_file.name}
+            opt = {"_file": py_file.name, "_lineno": node.lineno}
             for kw in node.keywords:
                 key = kw.arg
                 opt[key] = eval_ast(kw.value)
@@ -128,7 +132,7 @@ def attach_parents(tree):
 CLI_DIR = Path(".")
 all_commands = {}
 
-for py_file in sorted(CLI_DIR.glob("*.py")):
+for py_file in sorted(CLI_DIR.glob("cmd*.py")):
     print(f"  • Parsing {py_file.name}")
     try:
         parsed = parse_cli_file(py_file)
