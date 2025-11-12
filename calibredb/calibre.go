@@ -59,6 +59,7 @@ func (c *Calibre) Help() string {
 }
 
 func (c *Calibre) run(argv ...string) string {
+	argv = append(argv, "--with-library="+c.LibraryPath)
 	out, err := exec.Command("/Applications/calibre.app/Contents/MacOS/calibredb", argv...).CombinedOutput()
 	if err != nil {
 		if c.OnError != nil {

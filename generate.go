@@ -11,9 +11,24 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
+	"github.com/veverkap/calibre-rest/calibredb"
 )
 
 func main() {
+	c := calibredb.NewCalibre(calibredb.WithLibraryPath("/Users/veverkap/Code/personal/calibre-rest"))
+
+	s := c.List(
+		calibredb.ListOptions{
+			Ascending:  true,
+			Fields:     "author_sort, authors, comments",
+			ForMachine: lo.ToPtr(false),
+			Limit:      2,
+		},
+	)
+	fmt.Println(s)
+}
+
+func generate() {
 	// read calibre_cli_options.json
 	jsonData, err := os.ReadFile("/Users/veverkap/Code/personal/calibre-rest/calibredb_cli_options.json")
 	if err != nil {
