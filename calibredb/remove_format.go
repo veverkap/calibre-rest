@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: 
 // calibredb remove_format [options] id fmt
 // 
@@ -46,6 +47,10 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type RemoveFormatOptions struct {
+}
+
+func (c *Calibre) RemoveFormatHelp() string {
+	return c.run("remove_format", "-h")
 }
 
 func (c *Calibre) RemoveFormat(opts RemoveFormatOptions, args ...string) string {

@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb clone path/to/new/library
 // 
 // Create a clone of the current library. This creates a new, empty library that has all the
@@ -49,6 +50,10 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type CloneOptions struct {
+}
+
+func (c *Calibre) CloneHelp() string {
+	return c.run("clone", "-h")
 }
 
 func (c *Calibre) Clone(opts CloneOptions, args ...string) string {

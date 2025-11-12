@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb list_categories [options]
 // 
 // Produce a report of the category information in the database. The
@@ -63,9 +64,13 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type ListCategoriesOptions struct {
-	ItemCount string `json:"item_count,omitempty"`
 	Csv string `json:"csv,omitempty"`
 	Dialect string `json:"dialect,omitempty"`
+	ItemCount string `json:"item_count,omitempty"`
+}
+
+func (c *Calibre) ListCategoriesHelp() string {
+	return c.run("list_categories", "-h")
 }
 
 func (c *Calibre) ListCategories(opts ListCategoriesOptions, args ...string) string {

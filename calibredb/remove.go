@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb remove ids
 // 
 // Remove the books identified by ids from the database. ids should be a comma separated list of id numbers (you can get id numbers by using the search command). For example, 23,34,57-85 (when specifying a range, the last number in the range is not included).
@@ -49,6 +50,10 @@ package calibredb
 // 
 type RemoveOptions struct {
 	Permanent string `json:"permanent,omitempty"`
+}
+
+func (c *Calibre) RemoveHelp() string {
+	return c.run("remove", "-h")
 }
 
 func (c *Calibre) Remove(opts RemoveOptions, args ...string) string {

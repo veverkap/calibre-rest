@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb add_format [options] id ebook_file
 // 
 // Add the e-book in ebook_file to the available formats for the logical book identified by id. You can get id by using the search command. If the format already exists, it is replaced, unless the do not replace option is specified.
@@ -50,8 +51,12 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type AddFormatOptions struct {
-	DontReplace string `json:"dont-replace,omitempty"`
 	AsExtraDataFile string `json:"as-extra-data-file,omitempty"`
+	DontReplace string `json:"dont-replace,omitempty"`
+}
+
+func (c *Calibre) AddFormatHelp() string {
+	return c.run("add_format", "-h")
 }
 
 func (c *Calibre) AddFormat(opts AddFormatOptions, args ...string) string {

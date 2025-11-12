@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb add [options] file1 file2 file3 ...
 // 
 // Add the specified files as books to the database. You can also specify folders, see
@@ -114,14 +115,18 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type AddOptions struct {
-	Empty string `json:"empty,omitempty"`
-	Isbn string `json:"isbn,omitempty"`
-	Tags string `json:"tags,omitempty"`
-	Recurse string `json:"recurse,omitempty"`
-	Ignore string `json:"ignore,omitempty"`
 	Add string `json:"add,omitempty"`
-	Duplicates string `json:"duplicates,omitempty"`
 	Automerge string `json:"automerge,omitempty"`
+	Duplicates string `json:"duplicates,omitempty"`
+	Empty string `json:"empty,omitempty"`
+	Ignore string `json:"ignore,omitempty"`
+	Isbn string `json:"isbn,omitempty"`
+	Recurse string `json:"recurse,omitempty"`
+	Tags string `json:"tags,omitempty"`
+}
+
+func (c *Calibre) AddHelp() string {
+	return c.run("add", "-h")
 }
 
 func (c *Calibre) Add(opts AddOptions, args ...string) string {

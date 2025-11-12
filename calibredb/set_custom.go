@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb set_custom [options] column id value
 // 
 // Set the value of a custom column for the book identified by id.
@@ -54,6 +55,10 @@ package calibredb
 // 
 type SetCustomOptions struct {
 	Append string `json:"append,omitempty"`
+}
+
+func (c *Calibre) SetCustomHelp() string {
+	return c.run("set_custom", "-h")
 }
 
 func (c *Calibre) SetCustom(opts SetCustomOptions, args ...string) string {

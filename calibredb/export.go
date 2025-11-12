@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb export [options] ids
 // 
 // Export the books specified by ids (a comma separated list) to the filesystem.
@@ -103,18 +104,22 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type ExportOptions struct {
-	Template string `json:"template,omitempty"`
 	All string `json:"all,omitempty"`
-	SingleDir string `json:"single-dir,omitempty"`
-	Progress string `json:"progress,omitempty"`
 	DontAsciiize string `json:"dont-asciiize,omitempty"`
 	DontSaveCover string `json:"dont-save-cover,omitempty"`
-	Formats string `json:"formats,omitempty"`
-	ReplaceWhitespace string `json:"replace-whitespace,omitempty"`
-	ToLowercase string `json:"to-lowercase,omitempty"`
-	ToDir string `json:"to-dir,omitempty"`
 	DontWriteOpf string `json:"dont-write-opf,omitempty"`
+	Formats string `json:"formats,omitempty"`
+	Progress string `json:"progress,omitempty"`
+	ReplaceWhitespace string `json:"replace-whitespace,omitempty"`
+	SingleDir string `json:"single-dir,omitempty"`
+	Template string `json:"template,omitempty"`
 	Timefmt string `json:"timefmt,omitempty"`
+	ToDir string `json:"to-dir,omitempty"`
+	ToLowercase string `json:"to-lowercase,omitempty"`
+}
+
+func (c *Calibre) ExportHelp() string {
+	return c.run("export", "-h")
 }
 
 func (c *Calibre) Export(opts ExportOptions, args ...string) string {

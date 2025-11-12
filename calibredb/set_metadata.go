@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: 
 // calibredb set_metadata [options] book_id [/path/to/metadata.opf]
 // 
@@ -68,6 +69,10 @@ package calibredb
 type SetMetadataOptions struct {
 	Field string `json:"field,omitempty"`
 	ListFields string `json:"list-fields,omitempty"`
+}
+
+func (c *Calibre) SetMetadataHelp() string {
+	return c.run("set_metadata", "-h")
 }
 
 func (c *Calibre) SetMetadata(opts SetMetadataOptions, args ...string) string {

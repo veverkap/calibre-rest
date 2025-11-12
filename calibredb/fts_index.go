@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb fts_index [options] enable/disable/status/reindex
 // 
 // Control the Full text search indexing process.
@@ -69,6 +70,10 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type FtsIndexOptions struct {
+}
+
+func (c *Calibre) FtsIndexHelp() string {
+	return c.run("fts_index", "-h")
 }
 
 func (c *Calibre) FtsIndex(opts FtsIndexOptions, args ...string) string {

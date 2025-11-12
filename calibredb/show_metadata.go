@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: 
 // calibredb show_metadata [options] id
 // 
@@ -51,6 +52,10 @@ package calibredb
 // 
 type ShowMetadataOptions struct {
 	AsOpf string `json:"as-opf,omitempty"`
+}
+
+func (c *Calibre) ShowMetadataHelp() string {
+	return c.run("show_metadata", "-h")
 }
 
 func (c *Calibre) ShowMetadata(opts ShowMetadataOptions, args ...string) string {

@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb saved_searches [options] (list|add|remove)
 // 
 // Manage the saved searches stored in this database.
@@ -55,6 +56,10 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type SavedSearchesOptions struct {
+}
+
+func (c *Calibre) SavedSearchesHelp() string {
+	return c.run("saved_searches", "-h")
 }
 
 func (c *Calibre) SavedSearches(opts SavedSearchesOptions, args ...string) string {

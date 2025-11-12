@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb restore_database [options]
 // 
 // Restore this database from the metadata stored in OPF files in each
@@ -57,6 +58,10 @@ package calibredb
 // 
 type RestoreDatabaseOptions struct {
 	ReallyDoIt string `json:"really-do-it,omitempty"`
+}
+
+func (c *Calibre) RestoreDatabaseHelp() string {
+	return c.run("restore_database", "-h")
 }
 
 func (c *Calibre) RestoreDatabase(opts RestoreDatabaseOptions, args ...string) string {

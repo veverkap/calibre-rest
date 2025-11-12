@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb custom_columns [options]
 // 
 // List available custom columns. Shows column labels and ids.
@@ -49,6 +50,10 @@ package calibredb
 // 
 type CustomColumnsOptions struct {
 	Details string `json:"details,omitempty"`
+}
+
+func (c *Calibre) CustomColumnsHelp() string {
+	return c.run("custom_columns", "-h")
 }
 
 func (c *Calibre) CustomColumns(opts CustomColumnsOptions, args ...string) string {

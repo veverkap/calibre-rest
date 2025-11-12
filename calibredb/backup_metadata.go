@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb backup_metadata [options]
 // 
 // Backup the metadata stored in the database into individual OPF files in each
@@ -56,6 +57,10 @@ package calibredb
 // 
 type BackupMetadataOptions struct {
 	All string `json:"all,omitempty"`
+}
+
+func (c *Calibre) BackupMetadataHelp() string {
+	return c.run("backup_metadata", "-h")
 }
 
 func (c *Calibre) BackupMetadata(opts BackupMetadataOptions, args ...string) string {

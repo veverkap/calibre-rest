@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb check_library [options]
 // 
 // Perform some checks on the filesystem representing a library. Reports are invalid_titles, extra_titles, invalid_authors, extra_authors, missing_formats, extra_formats, extra_files, missing_covers, extra_covers, malformed_formats, malformed_paths, failed_folders
@@ -66,6 +67,10 @@ package calibredb
 type CheckLibraryOptions struct {
 	Csv string `json:"csv,omitempty"`
 	VacuumFtsDb string `json:"vacuum-fts-db,omitempty"`
+}
+
+func (c *Calibre) CheckLibraryHelp() string {
+	return c.run("check_library", "-h")
 }
 
 func (c *Calibre) CheckLibrary(opts CheckLibraryOptions, args ...string) string {

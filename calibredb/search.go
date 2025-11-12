@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb search [options] search expression
 // 
 // Search the library for the specified search term, returning a comma separated
@@ -55,6 +56,10 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type SearchOptions struct {
+}
+
+func (c *Calibre) SearchHelp() string {
+	return c.run("search", "-h")
 }
 
 func (c *Calibre) Search(opts SearchOptions, args ...string) string {

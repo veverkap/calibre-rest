@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb catalog /path/to/destination.(csv|epub|mobi|xml...) [options]
 // 
 // Export a catalog in format specified by path/to/destination extension.
@@ -196,14 +197,18 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type CatalogOptions struct {
-	GenerateSeries string `json:"generate-series,omitempty"`
-	Preset string `json:"preset,omitempty"`
-	Ids string `json:"ids,omitempty"`
-	Search string `json:"search,omitempty"`
-	Verbose string `json:"verbose,omitempty"`
 	GenerateAuthors string `json:"generate-authors,omitempty"`
 	GenerateGenres string `json:"generate-genres,omitempty"`
+	GenerateSeries string `json:"generate-series,omitempty"`
 	GenerateTitles string `json:"generate-titles,omitempty"`
+	Ids string `json:"ids,omitempty"`
+	Preset string `json:"preset,omitempty"`
+	Search string `json:"search,omitempty"`
+	Verbose string `json:"verbose,omitempty"`
+}
+
+func (c *Calibre) CatalogHelp() string {
+	return c.run("catalog", "-h")
 }
 
 func (c *Calibre) Catalog(opts CatalogOptions, args ...string) string {

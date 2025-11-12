@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb remove_custom_column [options] label
 // 
 // Remove the custom column identified by label. You can see available
@@ -50,6 +51,10 @@ package calibredb
 // 
 type RemoveCustomColumnOptions struct {
 	Force string `json:"force,omitempty"`
+}
+
+func (c *Calibre) RemoveCustomColumnHelp() string {
+	return c.run("remove_custom_column", "-h")
 }
 
 func (c *Calibre) RemoveCustomColumn(opts RemoveCustomColumnOptions, args ...string) string {

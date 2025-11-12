@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: calibredb fts_search [options] search expression
 // 
 // Do a full text search on the entire library or a subset of it.
@@ -77,6 +78,10 @@ package calibredb
 // 
 type FtsSearchOptions struct {
 	IncludeSnippets string `json:"include-snippets,omitempty"`
+}
+
+func (c *Calibre) FtsSearchHelp() string {
+	return c.run("fts_search", "-h")
 }
 
 func (c *Calibre) FtsSearch(opts FtsSearchOptions, args ...string) string {

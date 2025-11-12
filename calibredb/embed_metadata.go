@@ -1,4 +1,5 @@
 package calibredb
+		
 	// Usage: 
 // calibredb embed_metadata [options] book_id
 // 
@@ -57,6 +58,10 @@ package calibredb
 // Created by Kovid Goyal <kovid@kovidgoyal.net>
 // 
 type EmbedMetadataOptions struct {
+}
+
+func (c *Calibre) EmbedMetadataHelp() string {
+	return c.run("embed_metadata", "-h")
 }
 
 func (c *Calibre) EmbedMetadata(opts EmbedMetadataOptions, args ...string) string {
