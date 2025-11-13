@@ -14,18 +14,24 @@ import (
 	"github.com/veverkap/calibre-rest/calibredb"
 )
 
-type CombinedOptions struct {
-	Names       []string `json:"names,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Default     any      `json:"default,omitempty"`
-	Type        string   `json:"type,omitempty"`
-	Choices     string   `json:"choices,omitempty"`
+type Options struct {
+	Names       []string `json:"names"`
+	Description string   `json:"description"`
+	Default     any      `json:"default"`
+	Type        string   `json:"type"`
+	Choices     string   `json:"choices"`
+}
+type Args struct {
+	Name    string `json:"name"`
+	Type    string `json:"type"`
+	Choices any    `json:"choices"`
 }
 type Combined struct {
-	Name        string            `json:"name"`
-	Description string            `json:"description"`
-	Usage       string            `json:"usage"`
-	Options     []CombinedOptions `json:"options"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Usage       string    `json:"usage"`
+	Options     []Options `json:"options"`
+	Args        []Args    `json:"args"`
 }
 
 func main() {
@@ -33,6 +39,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// unmarshal jsonData into map[string]Combined
 	combined := make(map[string]Combined)
 	err = json.Unmarshal(jsonData, &combined)
 	if err != nil {
@@ -248,7 +256,7 @@ func test() {
 // 	}
 // }
 
-func loadColumnName(option CombinedOptions) string {
+func loadColumnName(option Options) string {
 	var columnName string
 	flags := option.Names
 	if len(flags) == 0 {
