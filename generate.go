@@ -38,39 +38,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for _, cmd := range combined {
-		fmt.Println(cmd.Usage)
-		for i, option := range cmd.Options {
-			if option.Type == "" {
-				if option.Default == "[]" {
-					option.Type = "[]string"
-					cmd.Options[i] = option
-					continue
-				}
-				if option.Choices != "" {
-					option.Type = "choice"
-					cmd.Options[i] = option
-					continue
-				}
-				switch option.Default.(type) {
-				case string:
-					option.Type = "string"
-				case int:
-					option.Type = "int"
-				case bool:
-					option.Type = "bool"
-				case float64:
-					option.Type = "float"
-				case nil:
-					option.Type = "string"
-				default:
-					fmt.Println("Could not figure out ", option.Default)
-					option.Type = "string"
-				}
-			}
-			cmd.Options[i] = option
-		}
-	}
 
 	for name, cmd := range combined {
 		var out bytes.Buffer

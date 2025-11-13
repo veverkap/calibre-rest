@@ -90,6 +90,16 @@ def parse_command(command_section):
                 option["subsection"] = subsection_name
                 command_data["options"].append(option)
     
+    # deduplicate options
+    seen_options = set()
+    unique_options = []
+    for option in command_data["options"]:
+        option_key = tuple(option["names"])
+        if option_key not in seen_options:
+            seen_options.add(option_key)
+            unique_options.append(option)
+    command_data["options"] = unique_options
+    
     return command_data
 
 
@@ -137,9 +147,10 @@ def main():
             continue
         
         command_data = parse_command(section)
+
         if command_data:
             commands.append(command_data)
-    
+
     # sort commands by name
     commands.sort(key=lambda x: x["name"])
     # Build final output
@@ -149,7 +160,7 @@ def main():
     }
     
     # Write to JSON file
-    output_file = "calibredb_options.json"
+    output_file = "scraped.json"
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
     

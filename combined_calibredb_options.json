@@ -9,7 +9,8 @@
           "--authors",
           "-a"
         ],
-        "description": "Set the authors of the added book(s)"
+        "description": "Set the authors of the added book(s)",
+        "type": "string"
       },
       {
         "names": [
@@ -26,7 +27,8 @@
           "--cover",
           "-c"
         ],
-        "description": "Path to the cover to use for the added book"
+        "description": "Path to the cover to use for the added book",
+        "type": "string"
       },
       {
         "names": [
@@ -34,7 +36,8 @@
           "-d"
         ],
         "description": "Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -42,7 +45,8 @@
           "-e"
         ],
         "description": "Add an empty book (a book with no formats)",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -50,28 +54,32 @@
           "-I"
         ],
         "description": "Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY",
-        "default": "[]"
+        "default": "[]",
+        "type": "[]string"
       },
       {
         "names": [
           "--isbn",
           "-i"
         ],
-        "description": "Set the ISBN of the added book(s)"
+        "description": "Set the ISBN of the added book(s)",
+        "type": "string"
       },
       {
         "names": [
           "--languages",
           "-l"
         ],
-        "description": "A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)"
+        "description": "A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)",
+        "type": "string"
       },
       {
         "names": [
           "--series",
           "-s"
         ],
-        "description": "Set the series of the added book(s)"
+        "description": "Set the series of the added book(s)",
+        "type": "string"
       },
       {
         "names": [
@@ -87,14 +95,16 @@
           "--tags",
           "-T"
         ],
-        "description": "Set the tags of the added book(s)"
+        "description": "Set the tags of the added book(s)",
+        "type": "string"
       },
       {
         "names": [
           "--title",
           "-t"
         ],
-        "description": "Set the title of the added book(s)"
+        "description": "Set the title of the added book(s)",
+        "type": "string"
       },
       {
         "names": [
@@ -102,7 +112,8 @@
           "-1"
         ],
         "description": "Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -110,7 +121,14 @@
           "-r"
         ],
         "description": "Process folders recursively",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "files",
+        "type": "[]string"
       }
     ]
   },
@@ -124,14 +142,30 @@
           "--display"
         ],
         "description": "A dictionary of options to customize how the data in this column will be interpreted. This is a JSON  string. For enumeration columns, use --display \" {\\ \" enum_values\\ \" :[\\ \" val1\\ \" , \\ \" val2\\ \" ]} \" There are many options that can go into the display variable.The options by column type are: composite: composite_template, composite_sort, make_category,contains_html, use_decorations datetime: date_format enumeration: enum_values, enum_colors, use_decorations int, float: number_format text: is_names, use_decorations  The best way to find legal combinations is to create a custom column of the appropriate type in the GUI then look at the backup OPF for a book (ensure that a new OPF has been created since the column was added). You will see the JSON for the \" display \" for the new column in the OPF.",
-        "default": "{}"
+        "default": "{}",
+        "type": "string"
       },
       {
         "names": [
           "--is-multiple"
         ],
         "description": "This column stores tag like data (i.e. multiple comma separated values). Only applies if datatype is text.",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "datatype",
+        "type": "string"
       }
     ]
   },
@@ -145,14 +179,26 @@
           "--as-extra-data-file"
         ],
         "description": "Add the file as an extra data file to the book, not an ebook format",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
           "--dont-replace"
         ],
         "description": "Do not replace the format if it already exists",
-        "default": true
+        "default": true,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "name": "ebook_file",
+        "type": "string"
       }
     ]
   },
@@ -166,7 +212,8 @@
           "--all"
         ],
         "description": "Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.",
-        "default": false
+        "default": false,
+        "type": "bool"
       }
     ]
   },
@@ -180,14 +227,16 @@
           "--ids",
           "-i"
         ],
-        "description": "Comma-separated list of database IDs to catalog. If declared, --search is ignored. Default: all"
+        "description": "Comma-separated list of database IDs to catalog. If declared, --search is ignored. Default: all",
+        "type": "string"
       },
       {
         "names": [
           "--search",
           "-s"
         ],
-        "description": "Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual. Default: no filtering"
+        "description": "Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual. Default: no filtering",
+        "type": "string"
       },
       {
         "names": [
@@ -195,7 +244,14 @@
           "-v"
         ],
         "description": "Show detailed output information. Useful for debugging",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "path",
+        "type": "string"
       }
     ]
   },
@@ -210,35 +266,40 @@
           "-c"
         ],
         "description": "Output in CSV",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
           "--ignore_extensions",
           "-e"
         ],
-        "description": "Comma-separated list of extensions to ignore. Default: all"
+        "description": "Comma-separated list of extensions to ignore. Default: all",
+        "type": "string"
       },
       {
         "names": [
           "--ignore_names",
           "-n"
         ],
-        "description": "Comma-separated list of names to ignore. Default: all"
+        "description": "Comma-separated list of names to ignore. Default: all",
+        "type": "string"
       },
       {
         "names": [
           "--report",
           "-r"
         ],
-        "description": "Comma-separated list of reports. Default: all"
+        "description": "Comma-separated list of reports. Default: all",
+        "type": "string"
       },
       {
         "names": [
           "--vacuum-fts-db"
         ],
         "description": "Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.",
-        "default": false
+        "default": false,
+        "type": "bool"
       }
     ]
   },
@@ -246,7 +307,13 @@
     "name": "clone",
     "description": "Create a clone of the current library. This creates a new, empty library that has all the\nsame custom columns, Virtual libraries and other settings as the current library.",
     "usage": "calibredb clone path/to/new/library",
-    "options": []
+    "options": [],
+    "args": [
+      {
+        "name": "path",
+        "type": "string"
+      }
+    ]
   },
   "custom_columns": {
     "name": "custom_columns",
@@ -259,7 +326,8 @@
           "-d"
         ],
         "description": "Show details for each column.",
-        "default": false
+        "default": false,
+        "type": "bool"
       }
     ]
   },
@@ -274,7 +342,14 @@
           "-f"
         ],
         "description": "Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.",
-        "default": "[]"
+        "default": "[]",
+        "type": "[]string"
+      }
+    ],
+    "args": [
+      {
+        "name": "book_id",
+        "type": "string"
       }
     ]
   },
@@ -288,28 +363,38 @@
           "--all"
         ],
         "description": "Export all books in database, ignoring the list of ids.",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
           "--progress"
         ],
         "description": "Report progress",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
           "--single-dir"
         ],
         "description": "Export all books into a single folder",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
           "--to-dir"
         ],
         "description": "Export books to the specified folder. Default is .",
-        "default": "."
+        "default": ".",
+        "type": "string"
+      }
+    ],
+    "args": [
+      {
+        "name": "ids",
+        "type": "[]string"
       }
     ]
   },
@@ -324,6 +409,7 @@
         ],
         "description": "The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.",
         "default": "",
+        "type": "choice",
         "choices": "('fast', 'slow', '')"
       },
       {
@@ -331,7 +417,14 @@
           "--wait-for-completion"
         ],
         "description": "Wait till all books are indexed, showing indexing progress periodically",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "enable/disable/status/reindex",
+        "type": "string"
       }
     ]
   },
@@ -345,14 +438,16 @@
           "--do-not-match-on-related-words"
         ],
         "description": "Only match on exact words not related words. So correction will not match correcting.",
-        "default": true
+        "default": true,
+        "type": "bool"
       },
       {
         "names": [
           "--include-snippets"
         ],
         "description": "Include snippets of the text surrounding each match. Note that this makes searching much slower.",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -367,14 +462,16 @@
           "--match-end-marker"
         ],
         "description": "The marker used to indicate the end of a matched word inside a snippet",
-        "default": "\u001b[m"
+        "default": "\u001b[m",
+        "type": "string"
       },
       {
         "names": [
           "--match-start-marker"
         ],
         "description": "The marker used to indicate the start of a matched word inside a snippet",
-        "default": "\u001b[31m"
+        "default": "\u001b[31m",
+        "type": "string"
       },
       {
         "names": [
@@ -382,6 +479,7 @@
         ],
         "description": "The format to output the search results in. Either \" text \" for plain text or \" json \" for JSON output.",
         "default": "text",
+        "type": "choice",
         "choices": "('text', 'json')"
       },
       {
@@ -389,7 +487,18 @@
           "--restrict-to"
         ],
         "description": "Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.",
-        "default": ""
+        "default": "",
+        "type": "string"
+      }
+    ],
+    "args": [
+      {
+        "name": "search",
+        "type": "string"
+      },
+      {
+        "name": "expression",
+        "type": "string"
       }
     ]
   },
@@ -403,7 +512,8 @@
           "--ascending"
         ],
         "description": "Sort results in ascending order",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -411,14 +521,16 @@
           "-f"
         ],
         "description": "The fields to display when listing books in the database. Should be a comma separated list of fields. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: title,authors. The special field \" all \" can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating",
-        "default": "title,authors"
+        "default": "title,authors",
+        "type": "string"
       },
       {
         "names": [
           "--for-machine"
         ],
         "description": "Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -441,47 +553,54 @@
         "names": [
           "--prefix"
         ],
-        "description": "The prefix for all file paths. Default is the absolute path to the library folder."
+        "description": "The prefix for all file paths. Default is the absolute path to the library folder.",
+        "type": "string"
       },
       {
         "names": [
           "--search",
           "-s"
         ],
-        "description": "Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering."
+        "description": "Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering.",
+        "type": "string"
       },
       {
         "names": [
           "--separator"
         ],
         "description": "The string used to separate fields. Default is a space.",
-        "default": " "
+        "default": " ",
+        "type": "string"
       },
       {
         "names": [
           "--sort-by"
         ],
-        "description": "The field by which to sort the results. You can specify multiple fields by separating them with commas. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating"
+        "description": "The field by which to sort the results. You can specify multiple fields by separating them with commas. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating",
+        "type": "string"
       },
       {
         "names": [
           "--template"
         ],
-        "description": "The template to run if \" template \" is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None"
+        "description": "The template to run if \" template \" is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None",
+        "type": "string"
       },
       {
         "names": [
           "--template_file",
           "-t"
         ],
-        "description": "Path to a file containing the template to run if \" template \" is in the field list. Default: None"
+        "description": "Path to a file containing the template to run if \" template \" is in the field list. Default: None",
+        "type": "string"
       },
       {
         "names": [
           "--template_heading"
         ],
         "description": "Heading for the template column. Default: template. This option is ignored if the option --for-machine is set",
-        "default": "template"
+        "default": "template",
+        "type": "string"
       }
     ]
   },
@@ -496,7 +615,8 @@
           "-r"
         ],
         "description": "Comma-separated list of category lookup names. Default: all",
-        "default": ""
+        "default": "",
+        "type": "string"
       },
       {
         "names": [
@@ -504,7 +624,8 @@
           "-c"
         ],
         "description": "Output in CSV",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -512,6 +633,7 @@
         ],
         "description": "The type of CSV file to produce. Choices: excel, excel-tab, unix",
         "default": "excel",
+        "type": "choice",
         "choices": "csv.list_dialects()"
       },
       {
@@ -520,7 +642,8 @@
           "-i"
         ],
         "description": "Output only the number of items in a category instead of the counts per item within the category",
-        "default": false
+        "default": false,
+        "type": "bool"
       },
       {
         "names": [
@@ -543,7 +666,14 @@
           "--permanent"
         ],
         "description": "Do not use the Recycle Bin",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "ids",
+        "type": "[]string"
       }
     ]
   },
@@ -558,7 +688,14 @@
           "-f"
         ],
         "description": "Do not ask for confirmation",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "label",
+        "type": "string"
       }
     ]
   },
@@ -566,7 +703,17 @@
     "name": "remove_format",
     "description": "Remove the format fmt from the logical book identified by id. You can get id by using the search command. fmt should be a file extension like LRF or TXT or EPUB. If the logical book does not have fmt available, do nothing.",
     "usage": "calibredb remove_format [options] id fmt",
-    "options": []
+    "options": [],
+    "args": [
+      {
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "name": "fmt",
+        "type": "string"
+      }
+    ]
   },
   "restore_database": {
     "name": "restore_database",
@@ -579,7 +726,8 @@
           "-r"
         ],
         "description": "Really do the recovery. The command will not run unless this option is specified.",
-        "default": false
+        "default": false,
+        "type": "bool"
       }
     ]
   },
@@ -603,6 +751,16 @@
         "default": "-1",
         "type": "int"
       }
+    ],
+    "args": [
+      {
+        "name": "search",
+        "type": "string"
+      },
+      {
+        "name": "expression",
+        "type": "string"
+      }
     ]
   },
   "set_custom": {
@@ -616,7 +774,22 @@
           "-a"
         ],
         "description": "If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "column",
+        "type": "string"
+      },
+      {
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "name": "value",
+        "type": "string"
       }
     ]
   },
@@ -631,7 +804,8 @@
           "-f"
         ],
         "description": "The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.",
-        "default": "[]"
+        "default": "[]",
+        "type": "[]string"
       },
       {
         "names": [
@@ -639,7 +813,18 @@
           "-l"
         ],
         "description": "List the metadata field names that can be used with the --field option",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "book_id",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "type": "string"
       }
     ]
   },
@@ -653,7 +838,14 @@
           "--as-opf"
         ],
         "description": "Print metadata in OPF form (XML)",
-        "default": false
+        "default": false,
+        "type": "bool"
+      }
+    ],
+    "args": [
+      {
+        "name": "id",
+        "type": "string"
       }
     ]
   }

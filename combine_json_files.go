@@ -7,15 +7,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/veverkap/calibre-rest/calibredb"
 )
 
 func main() {
 	// read calibre_cli_options.json
-	jsonData, err := os.ReadFile("/Users/veverkap/Code/personal/calibre-rest/calibredb_cli_options.json")
+	jsonData, err := os.ReadFile("/Users/veverkap/Code/personal/calibre-rest/parsed.json")
 	if err != nil {
 		panic(err)
 	}
@@ -27,7 +28,7 @@ func main() {
 	}
 
 	// read calibre_cli_options.json
-	jsonData, err = os.ReadFile("/Users/veverkap/Code/personal/calibre-rest/calibredb_options.json")
+	jsonData, err = os.ReadFile("/Users/veverkap/Code/personal/calibre-rest/scraped.json")
 	if err != nil {
 		panic(err)
 	}
@@ -51,6 +52,7 @@ func main() {
 			Description: cmd.Description,
 			Usage:       cmd.Usage,
 			Options:     make([]CombinedOptions, 0),
+			Args:        make([]Arguments, 0),
 		}
 
 		for _, opt := range cmd.AutoOptions {
@@ -92,7 +94,89 @@ func main() {
 		combined[cmd.Name] = newcommands
 	}
 
-	jsonOut, err := json.MarshalIndent(combined, "", "  ")
+	updatedcombined := make(map[string]Combined)
+	for _, cmd := range combined {
+		for i, option := range cmd.Options {
+			if option.Type == "" {
+				if option.Default == "[]" {
+					option.Type = "[]string"
+					cmd.Options[i] = option
+					continue
+				}
+				if option.Choices != "" {
+					option.Type = "choice"
+					cmd.Options[i] = option
+					continue
+				}
+				switch option.Default.(type) {
+				case string:
+					option.Type = "string"
+				case int:
+					option.Type = "int"
+				case bool:
+					option.Type = "bool"
+				case float64:
+					option.Type = "float"
+				case nil:
+					option.Type = "string"
+				default:
+					fmt.Println("Could not figure out ", option.Default)
+					option.Type = "string"
+				}
+			}
+			cmd.Options[i] = option
+		}
+		arguments := strings.Split(cmd.Usage, " ")
+
+		// we do not care about the first argument calibredb or the second argument which is the command name
+		if len(arguments) > 2 {
+			// if one of the arguments is "..." this means it is a variadic argument like `file1 file2 file3 ...`
+			if slices.Contains(arguments[2:], "...") {
+				newoption := Arguments{
+					Name: "files",
+					Type: "[]string",
+				}
+				cmd.Args = append(cmd.Args, newoption)
+			} else {
+				// otherwise we add all arguments one by one
+				for _, arg := range arguments[2:] {
+					if arg == "[options]" {
+						// we skip over this since we already have options parsed
+						continue
+					}
+					if arg == "(list|add|remove)" {
+						continue
+					}
+					if strings.Contains(arg, "path/to") {
+						newoption := Arguments{
+							Name: "path",
+							Type: "string",
+						}
+						cmd.Args = append(cmd.Args, newoption)
+						continue
+					}
+					// check if the whole word "comma" is in the description
+					re := regexp.MustCompile(`\bcomma\b`)
+					if re.MatchString(cmd.Description) && arg == "ids" {
+						newoption := Arguments{
+							Name: arg,
+							Type: "[]string",
+						}
+						cmd.Args = append(cmd.Args, newoption)
+					} else {
+						newoption := Arguments{
+							Name: arg,
+							Type: "string",
+						}
+						cmd.Args = append(cmd.Args, newoption)
+					}
+				}
+			}
+		}
+		updatedcombined[cmd.Name] = cmd
+	}
+
+	jsonOut, err := json.MarshalIndent(updatedcombined, "", "  ")
 	if err != nil {
 		panic(err)
 	}
@@ -100,22 +184,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	os.Remove("/Users/veverkap/Code/personal/calibre-rest/calibredb_cli_options.json")
-	os.Remove("/Users/veverkap/Code/personal/calibre-rest/calibredb_options.json")
-}
-
-func test() {
-	c := calibredb.NewCalibre(calibredb.WithLibraryPath("/Users/veverkap/Code/personal/calibre-rest"))
-
-	s := c.List(
-		calibredb.ListOptions{
-			Ascending:  true,
-			Fields:     "author_sort, authors, comments",
-			ForMachine: lo.ToPtr(false),
-			Limit:      2,
-		},
-	)
-	fmt.Println(s)
 }
 
 type Options struct {
@@ -171,9 +239,16 @@ type CombinedOptions struct {
 	Type        string   `json:"type,omitempty"`
 	Choices     string   `json:"choices,omitempty"`
 }
+
+type Arguments struct {
+	Name    string   `json:"name,omitempty"`
+	Type    string   `json:"type,omitempty"`
+	Choices []string `json:"choices,omitempty"`
+}
 type Combined struct {
 	Name        string            `json:"name"`
 	Description string            `json:"description"`
 	Usage       string            `json:"usage"`
 	Options     []CombinedOptions `json:"options"`
+	Args        []Arguments       `json:"args,omitempty"`
 }

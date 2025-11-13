@@ -2,7 +2,7 @@
 set -euo pipefail
 
 FOLDER_URL="https://api.github.com/repos/kovidgoyal/calibre/contents/src/calibre/db/cli"
-OUTPUT_JSON="$(pwd)/calibredb_cli_options.json"
+OUTPUT_JSON="$(pwd)/parsed.json"
 
 echo "==> Fetching Python files from $FOLDER_URL ..."
 mkdir -p calibre_cli
@@ -23,7 +23,6 @@ for url in $files; do
     curl -s -O "$url"
 done
 echo "✓ Download complete."
-
 
 # --- Python AST extractor ---
 cat << 'PYCODE' > extract_options.py
@@ -170,4 +169,7 @@ python3 scraper.py
 
 echo "==> Combining JSON outputs ..."
 go run combine_json_files.go
+
+echo "==> Removing intermediate JSON files ..."
+rm -f parsed.json scraped.json
 echo "✓ Done."
