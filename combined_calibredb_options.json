@@ -1,0 +1,660 @@
+{
+  "add": {
+    "name": "add",
+    "description": "Add the specified files as books to the database. You can also specify folders, see\nthe folder related options below.",
+    "usage": "calibredb add [options] file1 file2 file3 ...",
+    "options": [
+      {
+        "names": [
+          "--authors",
+          "-a"
+        ],
+        "description": "Set the authors of the added book(s)"
+      },
+      {
+        "names": [
+          "--automerge",
+          "-m"
+        ],
+        "description": "If books with similar titles and authors are found, merge the incoming formats (files) automatically into existing book records. A value of \" ignore \" means duplicate formats are discarded. A value of \" overwrite \" means duplicate formats in the library are overwritten with the newly added files. A value of \" new_record \" means duplicate formats are placed into a new book record.",
+        "default": "disabled",
+        "type": "choice",
+        "choices": "('disabled', 'ignore', 'overwrite', 'new_record')"
+      },
+      {
+        "names": [
+          "--cover",
+          "-c"
+        ],
+        "description": "Path to the cover to use for the added book"
+      },
+      {
+        "names": [
+          "--duplicates",
+          "-d"
+        ],
+        "description": "Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.",
+        "default": false
+      },
+      {
+        "names": [
+          "--empty",
+          "-e"
+        ],
+        "description": "Add an empty book (a book with no formats)",
+        "default": false
+      },
+      {
+        "names": [
+          "--identifier",
+          "-I"
+        ],
+        "description": "Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY",
+        "default": "[]"
+      },
+      {
+        "names": [
+          "--isbn",
+          "-i"
+        ],
+        "description": "Set the ISBN of the added book(s)"
+      },
+      {
+        "names": [
+          "--languages",
+          "-l"
+        ],
+        "description": "A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)"
+      },
+      {
+        "names": [
+          "--series",
+          "-s"
+        ],
+        "description": "Set the series of the added book(s)"
+      },
+      {
+        "names": [
+          "--series-index",
+          "-S"
+        ],
+        "description": "Set the series number of the added book(s)",
+        "default": 1,
+        "type": "float"
+      },
+      {
+        "names": [
+          "--tags",
+          "-T"
+        ],
+        "description": "Set the tags of the added book(s)"
+      },
+      {
+        "names": [
+          "--title",
+          "-t"
+        ],
+        "description": "Set the title of the added book(s)"
+      },
+      {
+        "names": [
+          "--one-book-per-directory",
+          "-1"
+        ],
+        "description": "Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book",
+        "default": false
+      },
+      {
+        "names": [
+          "--recurse",
+          "-r"
+        ],
+        "description": "Process folders recursively",
+        "default": false
+      }
+    ]
+  },
+  "add_custom_column": {
+    "name": "add_custom_column",
+    "description": "Create a custom column. label is the machine friendly name of the column. Should\nnot contain spaces or colons. name is the human friendly name of the column.\ndatatype is one of: bool, comments, composite, datetime, enumeration, float, int, rating, series, text",
+    "usage": "calibredb add_custom_column [options] label name datatype",
+    "options": [
+      {
+        "names": [
+          "--display"
+        ],
+        "description": "A dictionary of options to customize how the data in this column will be interpreted. This is a JSON  string. For enumeration columns, use --display \" {\\ \" enum_values\\ \" :[\\ \" val1\\ \" , \\ \" val2\\ \" ]} \" There are many options that can go into the display variable.The options by column type are: composite: composite_template, composite_sort, make_category,contains_html, use_decorations datetime: date_format enumeration: enum_values, enum_colors, use_decorations int, float: number_format text: is_names, use_decorations  The best way to find legal combinations is to create a custom column of the appropriate type in the GUI then look at the backup OPF for a book (ensure that a new OPF has been created since the column was added). You will see the JSON for the \" display \" for the new column in the OPF.",
+        "default": "{}"
+      },
+      {
+        "names": [
+          "--is-multiple"
+        ],
+        "description": "This column stores tag like data (i.e. multiple comma separated values). Only applies if datatype is text.",
+        "default": false
+      }
+    ]
+  },
+  "add_format": {
+    "name": "add_format",
+    "description": "Add the e-book in ebook_file to the available formats for the logical book identified by id. You can get id by using the search command. If the format already exists, it is replaced, unless the do not replace option is specified.",
+    "usage": "calibredb add_format [options] id ebook_file",
+    "options": [
+      {
+        "names": [
+          "--as-extra-data-file"
+        ],
+        "description": "Add the file as an extra data file to the book, not an ebook format",
+        "default": false
+      },
+      {
+        "names": [
+          "--dont-replace"
+        ],
+        "description": "Do not replace the format if it already exists",
+        "default": true
+      }
+    ]
+  },
+  "backup_metadata": {
+    "name": "backup_metadata",
+    "description": "Backup the metadata stored in the database into individual OPF files in each\nbooks folder. This normally happens automatically, but you can run this\ncommand to force re-generation of the OPF files, with the –all option.",
+    "usage": "calibredb backup_metadata [options]",
+    "options": [
+      {
+        "names": [
+          "--all"
+        ],
+        "description": "Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.",
+        "default": false
+      }
+    ]
+  },
+  "catalog": {
+    "name": "catalog",
+    "description": "Export a catalog in format specified by path/to/destination extension.\nOptions control how entries are displayed in the generated catalog output.\nNote that different catalog formats support different sets of options. To\nsee the different options, specify the name of the output file and then the\n–help option.",
+    "usage": "calibredb catalog /path/to/destination.(csv|epub|mobi|xml...) [options]",
+    "options": [
+      {
+        "names": [
+          "--ids",
+          "-i"
+        ],
+        "description": "Comma-separated list of database IDs to catalog. If declared, --search is ignored. Default: all"
+      },
+      {
+        "names": [
+          "--search",
+          "-s"
+        ],
+        "description": "Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual. Default: no filtering"
+      },
+      {
+        "names": [
+          "--verbose",
+          "-v"
+        ],
+        "description": "Show detailed output information. Useful for debugging",
+        "default": false
+      }
+    ]
+  },
+  "check_library": {
+    "name": "check_library",
+    "description": "Perform some checks on the filesystem representing a library. Reports are invalid_titles, extra_titles, invalid_authors, extra_authors, missing_formats, extra_formats, extra_files, missing_covers, extra_covers, malformed_formats, malformed_paths, failed_folders",
+    "usage": "calibredb check_library [options]",
+    "options": [
+      {
+        "names": [
+          "--csv",
+          "-c"
+        ],
+        "description": "Output in CSV",
+        "default": false
+      },
+      {
+        "names": [
+          "--ignore_extensions",
+          "-e"
+        ],
+        "description": "Comma-separated list of extensions to ignore. Default: all"
+      },
+      {
+        "names": [
+          "--ignore_names",
+          "-n"
+        ],
+        "description": "Comma-separated list of names to ignore. Default: all"
+      },
+      {
+        "names": [
+          "--report",
+          "-r"
+        ],
+        "description": "Comma-separated list of reports. Default: all"
+      },
+      {
+        "names": [
+          "--vacuum-fts-db"
+        ],
+        "description": "Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.",
+        "default": false
+      }
+    ]
+  },
+  "clone": {
+    "name": "clone",
+    "description": "Create a clone of the current library. This creates a new, empty library that has all the\nsame custom columns, Virtual libraries and other settings as the current library.",
+    "usage": "calibredb clone path/to/new/library",
+    "options": []
+  },
+  "custom_columns": {
+    "name": "custom_columns",
+    "description": "List available custom columns. Shows column labels and ids.",
+    "usage": "calibredb custom_columns [options]",
+    "options": [
+      {
+        "names": [
+          "--details",
+          "-d"
+        ],
+        "description": "Show details for each column.",
+        "default": false
+      }
+    ]
+  },
+  "embed_metadata": {
+    "name": "embed_metadata",
+    "description": "Update the metadata in the actual book files stored in the calibre library from\nthe metadata in the calibre database.  Normally, metadata is updated only when\nexporting files from calibre, this command is useful if you want the files to\nbe updated in place. Note that different file formats support different amounts\nof metadata. You can use the special value ‘all’ for book_id to update metadata\nin all books. You can also specify many book ids separated by spaces and id ranges\nseparated by hyphens. For example: calibredb embed_metadata 1 2 10-15 23",
+    "usage": "calibredb embed_metadata [options] book_id",
+    "options": [
+      {
+        "names": [
+          "--only-formats",
+          "-f"
+        ],
+        "description": "Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.",
+        "default": "[]"
+      }
+    ]
+  },
+  "export": {
+    "name": "export",
+    "description": "Export the books specified by ids (a comma separated list) to the filesystem.\nThe export operation saves all formats of the book, its cover and metadata (in\nan OPF file). Any extra data files associated with the book are also saved.\nYou can get id numbers from the search command.",
+    "usage": "calibredb export [options] ids",
+    "options": [
+      {
+        "names": [
+          "--all"
+        ],
+        "description": "Export all books in database, ignoring the list of ids.",
+        "default": false
+      },
+      {
+        "names": [
+          "--progress"
+        ],
+        "description": "Report progress",
+        "default": false
+      },
+      {
+        "names": [
+          "--single-dir"
+        ],
+        "description": "Export all books into a single folder",
+        "default": false
+      },
+      {
+        "names": [
+          "--to-dir"
+        ],
+        "description": "Export books to the specified folder. Default is .",
+        "default": "."
+      }
+    ]
+  },
+  "fts_index": {
+    "name": "fts_index",
+    "description": "Control the Full text search indexing process.",
+    "usage": "calibredb fts_index [options] enable/disable/status/reindex",
+    "options": [
+      {
+        "names": [
+          "--indexing-speed"
+        ],
+        "description": "The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.",
+        "default": "",
+        "choices": "('fast', 'slow', '')"
+      },
+      {
+        "names": [
+          "--wait-for-completion"
+        ],
+        "description": "Wait till all books are indexed, showing indexing progress periodically",
+        "default": false
+      }
+    ]
+  },
+  "fts_search": {
+    "name": "fts_search",
+    "description": "Do a full text search on the entire library or a subset of it.",
+    "usage": "calibredb fts_search [options] search expression",
+    "options": [
+      {
+        "names": [
+          "--do-not-match-on-related-words"
+        ],
+        "description": "Only match on exact words not related words. So correction will not match correcting.",
+        "default": true
+      },
+      {
+        "names": [
+          "--include-snippets"
+        ],
+        "description": "Include snippets of the text surrounding each match. Note that this makes searching much slower.",
+        "default": false
+      },
+      {
+        "names": [
+          "--indexing-threshold"
+        ],
+        "description": "How much of the library must be indexed before searching is allowed, as a percentage. Defaults to 90",
+        "default": 90,
+        "type": "float"
+      },
+      {
+        "names": [
+          "--match-end-marker"
+        ],
+        "description": "The marker used to indicate the end of a matched word inside a snippet",
+        "default": "\u001b[m"
+      },
+      {
+        "names": [
+          "--match-start-marker"
+        ],
+        "description": "The marker used to indicate the start of a matched word inside a snippet",
+        "default": "\u001b[31m"
+      },
+      {
+        "names": [
+          "--output-format"
+        ],
+        "description": "The format to output the search results in. Either \" text \" for plain text or \" json \" for JSON output.",
+        "default": "text",
+        "choices": "('text', 'json')"
+      },
+      {
+        "names": [
+          "--restrict-to"
+        ],
+        "description": "Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.",
+        "default": ""
+      }
+    ]
+  },
+  "list": {
+    "name": "list",
+    "description": "List the books available in the calibre database.",
+    "usage": "calibredb list [options]",
+    "options": [
+      {
+        "names": [
+          "--ascending"
+        ],
+        "description": "Sort results in ascending order",
+        "default": false
+      },
+      {
+        "names": [
+          "--fields",
+          "-f"
+        ],
+        "description": "The fields to display when listing books in the database. Should be a comma separated list of fields. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: title,authors. The special field \" all \" can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating",
+        "default": "title,authors"
+      },
+      {
+        "names": [
+          "--for-machine"
+        ],
+        "description": "Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.",
+        "default": false
+      },
+      {
+        "names": [
+          "--limit"
+        ],
+        "description": "The maximum number of results to display. Default: all",
+        "default": "-1",
+        "type": "int"
+      },
+      {
+        "names": [
+          "--line-width",
+          "-w"
+        ],
+        "description": "The maximum width of a single line in the output. Defaults to detecting screen size.",
+        "default": "-1",
+        "type": "int"
+      },
+      {
+        "names": [
+          "--prefix"
+        ],
+        "description": "The prefix for all file paths. Default is the absolute path to the library folder."
+      },
+      {
+        "names": [
+          "--search",
+          "-s"
+        ],
+        "description": "Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering."
+      },
+      {
+        "names": [
+          "--separator"
+        ],
+        "description": "The string used to separate fields. Default is a space.",
+        "default": " "
+      },
+      {
+        "names": [
+          "--sort-by"
+        ],
+        "description": "The field by which to sort the results. You can specify multiple fields by separating them with commas. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating"
+      },
+      {
+        "names": [
+          "--template"
+        ],
+        "description": "The template to run if \" template \" is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None"
+      },
+      {
+        "names": [
+          "--template_file",
+          "-t"
+        ],
+        "description": "Path to a file containing the template to run if \" template \" is in the field list. Default: None"
+      },
+      {
+        "names": [
+          "--template_heading"
+        ],
+        "description": "Heading for the template column. Default: template. This option is ignored if the option --for-machine is set",
+        "default": "template"
+      }
+    ]
+  },
+  "list_categories": {
+    "name": "list_categories",
+    "description": "Produce a report of the category information in the database. The\ninformation is the equivalent of what is shown in the Tag browser.",
+    "usage": "calibredb list_categories [options]",
+    "options": [
+      {
+        "names": [
+          "--categories",
+          "-r"
+        ],
+        "description": "Comma-separated list of category lookup names. Default: all",
+        "default": ""
+      },
+      {
+        "names": [
+          "--csv",
+          "-c"
+        ],
+        "description": "Output in CSV",
+        "default": false
+      },
+      {
+        "names": [
+          "--dialect"
+        ],
+        "description": "The type of CSV file to produce. Choices: excel, excel-tab, unix",
+        "default": "excel",
+        "choices": "csv.list_dialects()"
+      },
+      {
+        "names": [
+          "--item_count",
+          "-i"
+        ],
+        "description": "Output only the number of items in a category instead of the counts per item within the category",
+        "default": false
+      },
+      {
+        "names": [
+          "--width",
+          "-w"
+        ],
+        "description": "The maximum width of a single line in the output. Defaults to detecting screen size.",
+        "default": "-1",
+        "type": "int"
+      }
+    ]
+  },
+  "remove": {
+    "name": "remove",
+    "description": "Remove the books identified by ids from the database. ids should be a comma separated list of id numbers (you can get id numbers by using the search command). For example, 23,34,57-85 (when specifying a range, the last number in the range is not included).",
+    "usage": "calibredb remove ids",
+    "options": [
+      {
+        "names": [
+          "--permanent"
+        ],
+        "description": "Do not use the Recycle Bin",
+        "default": false
+      }
+    ]
+  },
+  "remove_custom_column": {
+    "name": "remove_custom_column",
+    "description": "Remove the custom column identified by label. You can see available\ncolumns with the custom_columns command.",
+    "usage": "calibredb remove_custom_column [options] label",
+    "options": [
+      {
+        "names": [
+          "--force",
+          "-f"
+        ],
+        "description": "Do not ask for confirmation",
+        "default": false
+      }
+    ]
+  },
+  "remove_format": {
+    "name": "remove_format",
+    "description": "Remove the format fmt from the logical book identified by id. You can get id by using the search command. fmt should be a file extension like LRF or TXT or EPUB. If the logical book does not have fmt available, do nothing.",
+    "usage": "calibredb remove_format [options] id fmt",
+    "options": []
+  },
+  "restore_database": {
+    "name": "restore_database",
+    "description": "Restore this database from the metadata stored in OPF files in each\nfolder of the calibre library. This is useful if your metadata.db file\nhas been corrupted.",
+    "usage": "calibredb restore_database [options]",
+    "options": [
+      {
+        "names": [
+          "--really-do-it",
+          "-r"
+        ],
+        "description": "Really do the recovery. The command will not run unless this option is specified.",
+        "default": false
+      }
+    ]
+  },
+  "saved_searches": {
+    "name": "saved_searches",
+    "description": "Manage the saved searches stored in this database.\nIf you try to add a query with a name that already exists, it will be\nreplaced.",
+    "usage": "calibredb saved_searches [options] (list|add|remove)",
+    "options": []
+  },
+  "search": {
+    "name": "search",
+    "description": "Search the library for the specified search term, returning a comma separated\nlist of book ids matching the search expression. The output format is useful\nto feed into other commands that accept a list of ids as input.",
+    "usage": "calibredb search [options] search expression",
+    "options": [
+      {
+        "names": [
+          "--limit",
+          "-l"
+        ],
+        "description": "The maximum number of results to return. Default is all results.",
+        "default": "-1",
+        "type": "int"
+      }
+    ]
+  },
+  "set_custom": {
+    "name": "set_custom",
+    "description": "Set the value of a custom column for the book identified by id.\nYou can get a list of ids using the search command.\nYou can get a list of custom column names using the custom_columns\ncommand.",
+    "usage": "calibredb set_custom [options] column id value",
+    "options": [
+      {
+        "names": [
+          "--append",
+          "-a"
+        ],
+        "description": "If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.",
+        "default": false
+      }
+    ]
+  },
+  "set_metadata": {
+    "name": "set_metadata",
+    "description": "Set the metadata stored in the calibre database for the book identified by\nbook_id from the OPF file metadata.opf. book_id is a book id number from the\nsearch command. You can get a quick feel for the OPF format by using the\n–as-opf switch to the show_metadata command. You can also set the metadata of\nindividual fields with the –field option. If you use the –field option, there\nis no need to specify an OPF file.",
+    "usage": "calibredb set_metadata [options] book_id [/path/to/metadata.opf]",
+    "options": [
+      {
+        "names": [
+          "--field",
+          "-f"
+        ],
+        "description": "The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.",
+        "default": "[]"
+      },
+      {
+        "names": [
+          "--list-fields",
+          "-l"
+        ],
+        "description": "List the metadata field names that can be used with the --field option",
+        "default": false
+      }
+    ]
+  },
+  "show_metadata": {
+    "name": "show_metadata",
+    "description": "Show the metadata stored in the calibre database for the book identified by id.\nid is an id number from the search command.",
+    "usage": "calibredb show_metadata [options] id",
+    "options": [
+      {
+        "names": [
+          "--as-opf"
+        ],
+        "description": "Print metadata in OPF form (XML)",
+        "default": false
+      }
+    ]
+  }
+}

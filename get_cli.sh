@@ -164,4 +164,10 @@ echo "✓ Output written to: $OUTPUT_JSON"
 echo "==> Cleaning up downloaded Python files ..."
 cd ..
 rm -rf calibre_cli
+
+echo "==> Scraping Calibre CLI HTML manual ..."
+python3 scraper.py
+
+echo "==> Combining JSON outputs ..."
+go run combine_json_files.go
 echo "✓ Done."
