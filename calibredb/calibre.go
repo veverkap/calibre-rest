@@ -1,6 +1,10 @@
 package calibredb
 
-import "os/exec"
+import (
+	"os/exec"
+
+	_ "github.com/samber/lo"
+)
 
 type Calibre struct {
 	LibraryPath string `json:"library-path,omitempty"`

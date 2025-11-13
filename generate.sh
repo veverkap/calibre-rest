@@ -172,4 +172,7 @@ go run combine_json_files.go
 
 echo "==> Removing intermediate JSON files ..."
 rm -f parsed.json scraped.json
+
+echo "==> Generating Go structs from combined JSON ..."
+go run generate.go
 echo "✓ Done."

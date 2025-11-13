@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/veverkap/calibre-rest/calibredb"
 )
 
 type Options struct {
@@ -68,50 +67,69 @@ func main() {
 		out.WriteString("type " + structName + " struct {\n")
 		choices := make(map[string]string)
 
-		for _, option := range cmd.Options {
-			if len(option.Names) == 0 {
-				continue
+		if len(cmd.Args) > 0 {
+			out.WriteString("\t// Command Line Arguments\n")
+			for _, arg := range cmd.Args {
+				fieldName := lo.PascalCase(arg.Name)
+				argType := arg.Type
+				if argType == "bool" {
+					argType = "*bool"
+				}
+				out.WriteString(fmt.Sprintf("\t%s %s  `validate:\"required\"`\n", fieldName, argType))
 			}
-			columnName := loadColumnName(option)
-			fieldName := lo.PascalCase(strings.TrimLeft(columnName, "-"))
-
-			var fieldType string
-			switch option.Type {
-			case "string":
-				fieldType = "string"
-			case "int":
-				fieldType = "int"
-			case "float":
-				fieldType = "float64"
-			case "bool":
-				fieldType = "bool"
-			case "choice":
-				fieldType = fmt.Sprintf("%sChoice", fieldName)
-				choices[fieldType] = option.Choices
-			default:
-				fieldType = "string"
-			}
-			fmt.Printf("----Field: %s Type: %s\n", fieldName, fieldType)
-			out.WriteString(fmt.Sprintf("\t%s %s  // %s\n", fieldName, fieldType, strings.ReplaceAll(option.Description, "\n", " ")))
 		}
-		out.WriteString("}\n")
-		// generate choice types
-		for choiceType, choiceValues := range choices {
-			out.WriteString("\n")
-			out.WriteString(fmt.Sprintf("type %s string\n\n", choiceType))
-			out.WriteString("const (\n")
-			// parse choiceValues which is in format "('disabled', 'ignore', 'overwrite', 'new_record')"
-			trimmed := strings.Trim(choiceValues, "()")
-			split := strings.Split(trimmed, ",")
-			for _, val := range split {
-				cleaned := strings.Trim(val, " '\"")
-				if cleaned == "" {
+
+		if len(cmd.Options) > 0 {
+			out.WriteString("\n\t// Command Line Options\n")
+
+			for _, option := range cmd.Options {
+				if len(option.Names) == 0 {
 					continue
 				}
-				constName := lo.PascalCase(choiceType + "_" + cleaned)
-				out.WriteString(fmt.Sprintf("\t%s %s = \"%s\"\n", constName, choiceType, cleaned))
+				columnName := loadColumnName(option)
+				fieldName := lo.PascalCase(strings.TrimLeft(columnName, "-"))
+
+				var fieldType string
+				switch option.Type {
+				case "string":
+					fieldType = "string"
+				case "int":
+					fieldType = "int"
+				case "float":
+					fieldType = "float64"
+				case "bool":
+					fieldType = "*bool"
+				case "choice":
+					fieldType = fmt.Sprintf("%sChoice", fieldName)
+					choices[fieldType] = option.Choices
+				default:
+					fieldType = "string"
+				}
+				fmt.Printf("----Field: %s Type: %s\n", fieldName, fieldType)
+				out.WriteString(fmt.Sprintf("\t%s %s  // %s\n", fieldName, fieldType, strings.ReplaceAll(option.Description, "\n", " ")))
 			}
-			out.WriteString(")\n")
+		}
+		out.WriteString("}\n")
+
+		// generate choice types
+		if len(choices) > 0 {
+			for choiceType, choiceValues := range choices {
+				out.WriteString("\n")
+				out.WriteString(fmt.Sprintf("type %s string\n\n", choiceType))
+				out.WriteString("const (\n")
+				// parse choiceValues which is in format "('disabled', 'ignore', 'overwrite', 'new_record')"
+				trimmed := strings.Trim(choiceValues, "()")
+				split := strings.Split(trimmed, ",")
+				for _, val := range split {
+					cleaned := strings.Trim(val, " '\"")
+					if cleaned == "" {
+						continue
+					}
+					constName := lo.PascalCase(cleaned)
+					out.WriteString(fmt.Sprintf("\t%s %s = \"%s\"\n", constName, choiceType, cleaned))
+				}
+				out.WriteString(")\n")
+			}
 		}
 		out.WriteString("\n")
 		out.WriteString("func (c *Calibre) " + pascalCmd + "Help() string {\n")
@@ -122,26 +140,26 @@ func main() {
 		out.WriteString(fmt.Sprintf("\treturn \"%s\"\n", name))
 		out.WriteString("}\n")
 
-		err = os.WriteFile(fmt.Sprintf("generated/%s.go", name), out.Bytes(), 0644)
+		err = os.WriteFile(fmt.Sprintf("calibredb/%s.go", name), out.Bytes(), 0644)
 		if err != nil {
 			panic(err)
 		}
 	}
 }
 
-func test() {
-	c := calibredb.NewCalibre(calibredb.WithLibraryPath("/Users/veverkap/Code/personal/calibre-rest"))
+// func test() {
+// 	c := calibredb.NewCalibre(calibredb.WithLibraryPath("/Users/veverkap/Code/personal/calibre-rest"))
 
-	s := c.List(
-		calibredb.ListOptions{
-			Ascending:  true,
-			Fields:     "author_sort, authors, comments",
-			ForMachine: lo.ToPtr(false),
-			Limit:      2,
-		},
-	)
-	fmt.Println(s)
-}
+// 	s := c.List(
+// 		calibredb.ListOptions{
+// 			Ascending:  true,
+// 			Fields:     "author_sort, authors, comments",
+// 			ForMachine: lo.ToPtr(false),
+// 			Limit:      2,
+// 		},
+// 	)
+// 	fmt.Println(s)
+// }
 
 // func generate() {
 // 	// read calibre_cli_options.json
