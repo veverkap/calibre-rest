@@ -73,10 +73,8 @@ func TestCalibre_BackupMetadata(t *testing.T) {
 			if tt.wantErr {
 				t.Fatal("BackupMetadata() succeeded unexpectedly")
 			}
-			// If we somehow have calibredb installed and it succeeds,
-			// verify we got no output
-			if got == "" && gotErr != nil {
-				t.Error("BackupMetadata() returned empty string without error")
+			if got != "" {
+				t.Fatal("BackupMetadata() should have no response")
 			}
 		})
 	}
