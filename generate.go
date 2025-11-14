@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/veverkap/calibre-rest/calibredb"
 )
 
 type Options struct {
@@ -35,16 +34,6 @@ type Combined struct {
 }
 
 func main() {
-	c := calibredb.NewCalibre(calibredb.WithLibraryPath("/Users/veverkap/Code/personal/calibre-rest"))
-	output, err := c.AddCustomColumn(
-		calibredb.AddCustomColumnOptions{
-			Label:    "sdfassaddafsdsdfdsfsd",
-			Name:     "My Column",
-			Datatype: "text",
-		},
-	)
-	fmt.Println(output, err)
-	os.Exit(1)
 	jsonData, err := os.ReadFile("/Users/veverkap/Code/personal/calibre-rest/combined_calibredb_options.json")
 	if err != nil {
 		panic(err)
@@ -105,6 +94,8 @@ func main() {
 				switch option.Type {
 				case "string":
 					fieldType = "string"
+				case "[]string":
+					fieldType = "[]string"
 				case "int":
 					fieldType = "int"
 				case "float":
@@ -115,6 +106,7 @@ func main() {
 					fieldType = fmt.Sprintf("%sChoice", fieldName)
 					choices[fieldType] = option.Choices
 				default:
+					panic("unknown type: " + option.Type)
 					fieldType = "string"
 				}
 				// fmt.Printf("----Field: %s Type: %s\n", fieldName, fieldType)
@@ -170,6 +162,40 @@ func main() {
 					out.WriteString(fmt.Sprintf("\targv = append(argv, opts.%s)\n", fieldName))
 				case "[]string":
 					out.WriteString(fmt.Sprintf("\targv = append(argv, opts.%s...)\n", fieldName))
+				}
+			}
+		}
+		if len(cmd.Options) > 0 {
+			out.WriteString("\n\t// Command Line Options\n")
+			for _, option := range cmd.Options {
+				if len(option.Names) == 0 {
+					continue
+				}
+				columnName := loadColumnName(option)
+				fieldName := lo.PascalCase(strings.TrimLeft(columnName, "-"))
+
+				switch option.Type {
+				case "string":
+					out.WriteString("\t// Handling string\n")
+					out.WriteString(fmt.Sprintf("\tif opts.%s != \"\" {\n", fieldName))
+					out.WriteString(fmt.Sprintf("\t\targv = append(argv, \"%s\", opts.%s)\n", columnName, fieldName))
+					out.WriteString("\t}\n")
+				case "[]string":
+					out.WriteString("\t// Handling []string\n")
+					out.WriteString(fmt.Sprintf("\tif len(opts.%s) > 0 {\n", fieldName))
+					out.WriteString(fmt.Sprintf("\t\targv = append(argv, \"%s\")\n", columnName))
+					out.WriteString(fmt.Sprintf("\t\targv = append(argv, opts.%s...)\n", fieldName))
+					out.WriteString("\t}\n")
+				case "bool":
+					out.WriteString("\t// Handling bool\n")
+					out.WriteString(fmt.Sprintf("\tif opts.%s != nil && *opts.%s {\n", fieldName, fieldName))
+					out.WriteString(fmt.Sprintf("\t\targv = append(argv, \"%s\")\n", columnName))
+					out.WriteString("\t}\n")
+				default:
+					out.WriteString(fmt.Sprintf("\t// Handling other %s\n", option.Type))
+					// out.WriteString(fmt.Sprintf("\tif opts.%s != nil {\n", fieldName))
+					// out.WriteString(fmt.Sprintf("\t\targv = append(argv, \"%s\", fmt.Sprint(opts.%s))\n", columnName, fieldName))
+					// out.WriteString("\t}\n")
 				}
 			}
 		}

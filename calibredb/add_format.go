@@ -37,6 +37,16 @@ func (c *Calibre) AddFormat(opts AddFormatOptions, args ...string) (string, erro
 	// Command Line Arguments
 	argv = append(argv, opts.Id)
 	argv = append(argv, opts.EbookFile)
+
+	// Command Line Options
+	// Handling bool
+	if opts.AsExtraDataFile != nil && *opts.AsExtraDataFile {
+		argv = append(argv, "--as-extra-data-file")
+	}
+	// Handling bool
+	if opts.DontReplace != nil && *opts.DontReplace {
+		argv = append(argv, "--dont-replace")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

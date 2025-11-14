@@ -4,6 +4,15 @@ set -euo pipefail
 FOLDER_URL="https://api.github.com/repos/kovidgoyal/calibre/contents/src/calibre/db/cli"
 OUTPUT_JSON="$(pwd)/parsed.json"
 
+echo "NOTE: THIS WILL OVERWRITE THE GO FILES IN THIS REPO BASED ON THE CURRENT CALIBRE VERSION."
+echo "Are you sure you want to continue? (y/n)"
+read -r answer
+if [[ "$answer" != "y" ]]; then
+    echo "Aborting."
+    exit 0
+fi
+
+
 echo "==> Fetching Python files from $FOLDER_URL ..."
 mkdir -p calibre_cli
 cd calibre_cli

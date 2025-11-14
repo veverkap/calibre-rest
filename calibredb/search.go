@@ -38,6 +38,9 @@ func (c *Calibre) Search(opts SearchOptions, args ...string) (string, error) {
 	// Command Line Arguments
 	argv = append(argv, opts.Search)
 	argv = append(argv, opts.Expression)
+
+	// Command Line Options
+	// Handling other int
 	out, err := c.run(argv...)
 	return out, err
 }

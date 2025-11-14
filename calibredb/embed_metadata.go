@@ -19,7 +19,7 @@ type EmbedMetadataOptions struct {
 	BookId string  `validate:"required"`
 
 	// Command Line Options
-	OnlyFormats string  // Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.
+	OnlyFormats []string  // Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.
 }
 
 func (c *Calibre) EmbedMetadataHelp() string {
@@ -40,6 +40,13 @@ func (c *Calibre) EmbedMetadata(opts EmbedMetadataOptions, args ...string) (stri
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.BookId)
+
+	// Command Line Options
+	// Handling []string
+	if len(opts.OnlyFormats) > 0 {
+		argv = append(argv, "--only-formats")
+		argv = append(argv, opts.OnlyFormats...)
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

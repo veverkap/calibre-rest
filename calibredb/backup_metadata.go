@@ -32,6 +32,12 @@ func (c *Calibre) BackupMetadata(opts BackupMetadataOptions, args ...string) (st
 	if err != nil {
 		return "", err
 	}
+
+	// Command Line Options
+	// Handling bool
+	if opts.All != nil && *opts.All {
+		argv = append(argv, "--all")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

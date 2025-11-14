@@ -41,6 +41,50 @@ func (c *Calibre) List(opts ListOptions, args ...string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	// Command Line Options
+	// Handling bool
+	if opts.Ascending != nil && *opts.Ascending {
+		argv = append(argv, "--ascending")
+	}
+	// Handling string
+	if opts.Fields != "" {
+		argv = append(argv, "--fields", opts.Fields)
+	}
+	// Handling bool
+	if opts.ForMachine != nil && *opts.ForMachine {
+		argv = append(argv, "--for-machine")
+	}
+	// Handling other int
+	// Handling other int
+	// Handling string
+	if opts.Prefix != "" {
+		argv = append(argv, "--prefix", opts.Prefix)
+	}
+	// Handling string
+	if opts.Search != "" {
+		argv = append(argv, "--search", opts.Search)
+	}
+	// Handling string
+	if opts.Separator != "" {
+		argv = append(argv, "--separator", opts.Separator)
+	}
+	// Handling string
+	if opts.SortBy != "" {
+		argv = append(argv, "--sort-by", opts.SortBy)
+	}
+	// Handling string
+	if opts.Template != "" {
+		argv = append(argv, "--template", opts.Template)
+	}
+	// Handling string
+	if opts.TemplateFile != "" {
+		argv = append(argv, "--template_file", opts.TemplateFile)
+	}
+	// Handling string
+	if opts.TemplateHeading != "" {
+		argv = append(argv, "--template_heading", opts.TemplateHeading)
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

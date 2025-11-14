@@ -40,6 +40,24 @@ func (c *Calibre) Export(opts ExportOptions, args ...string) (string, error) {
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.Ids...)
+
+	// Command Line Options
+	// Handling bool
+	if opts.All != nil && *opts.All {
+		argv = append(argv, "--all")
+	}
+	// Handling bool
+	if opts.Progress != nil && *opts.Progress {
+		argv = append(argv, "--progress")
+	}
+	// Handling bool
+	if opts.SingleDir != nil && *opts.SingleDir {
+		argv = append(argv, "--single-dir")
+	}
+	// Handling string
+	if opts.ToDir != "" {
+		argv = append(argv, "--to-dir", opts.ToDir)
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

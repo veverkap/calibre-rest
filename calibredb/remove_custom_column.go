@@ -35,6 +35,12 @@ func (c *Calibre) RemoveCustomColumn(opts RemoveCustomColumnOptions, args ...str
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.Label)
+
+	// Command Line Options
+	// Handling bool
+	if opts.Force != nil && *opts.Force {
+		argv = append(argv, "--force")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

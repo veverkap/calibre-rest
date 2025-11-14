@@ -32,6 +32,12 @@ func (c *Calibre) RestoreDatabase(opts RestoreDatabaseOptions, args ...string) (
 	if err != nil {
 		return "", err
 	}
+
+	// Command Line Options
+	// Handling bool
+	if opts.ReallyDoIt != nil && *opts.ReallyDoIt {
+		argv = append(argv, "--really-do-it")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

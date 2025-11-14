@@ -34,6 +34,28 @@ func (c *Calibre) CheckLibrary(opts CheckLibraryOptions, args ...string) (string
 	if err != nil {
 		return "", err
 	}
+
+	// Command Line Options
+	// Handling bool
+	if opts.Csv != nil && *opts.Csv {
+		argv = append(argv, "--csv")
+	}
+	// Handling string
+	if opts.IgnoreExtensions != "" {
+		argv = append(argv, "--ignore_extensions", opts.IgnoreExtensions)
+	}
+	// Handling string
+	if opts.IgnoreNames != "" {
+		argv = append(argv, "--ignore_names", opts.IgnoreNames)
+	}
+	// Handling string
+	if opts.Report != "" {
+		argv = append(argv, "--report", opts.Report)
+	}
+	// Handling bool
+	if opts.VacuumFtsDb != nil && *opts.VacuumFtsDb {
+		argv = append(argv, "--vacuum-fts-db")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

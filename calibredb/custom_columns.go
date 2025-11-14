@@ -30,6 +30,12 @@ func (c *Calibre) CustomColumns(opts CustomColumnsOptions, args ...string) (stri
 	if err != nil {
 		return "", err
 	}
+
+	// Command Line Options
+	// Handling bool
+	if opts.Details != nil && *opts.Details {
+		argv = append(argv, "--details")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

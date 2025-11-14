@@ -49,6 +49,30 @@ func (c *Calibre) FtsSearch(opts FtsSearchOptions, args ...string) (string, erro
 	// Command Line Arguments
 	argv = append(argv, opts.Search)
 	argv = append(argv, opts.Expression)
+
+	// Command Line Options
+	// Handling bool
+	if opts.DoNotMatchOnRelatedWords != nil && *opts.DoNotMatchOnRelatedWords {
+		argv = append(argv, "--do-not-match-on-related-words")
+	}
+	// Handling bool
+	if opts.IncludeSnippets != nil && *opts.IncludeSnippets {
+		argv = append(argv, "--include-snippets")
+	}
+	// Handling other float
+	// Handling string
+	if opts.MatchEndMarker != "" {
+		argv = append(argv, "--match-end-marker", opts.MatchEndMarker)
+	}
+	// Handling string
+	if opts.MatchStartMarker != "" {
+		argv = append(argv, "--match-start-marker", opts.MatchStartMarker)
+	}
+	// Handling other choice
+	// Handling string
+	if opts.RestrictTo != "" {
+		argv = append(argv, "--restrict-to", opts.RestrictTo)
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

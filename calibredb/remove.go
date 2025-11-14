@@ -34,6 +34,12 @@ func (c *Calibre) Remove(opts RemoveOptions, args ...string) (string, error) {
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.Ids...)
+
+	// Command Line Options
+	// Handling bool
+	if opts.Permanent != nil && *opts.Permanent {
+		argv = append(argv, "--permanent")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

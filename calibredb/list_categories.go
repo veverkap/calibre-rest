@@ -41,6 +41,22 @@ func (c *Calibre) ListCategories(opts ListCategoriesOptions, args ...string) (st
 	if err != nil {
 		return "", err
 	}
+
+	// Command Line Options
+	// Handling string
+	if opts.Categories != "" {
+		argv = append(argv, "--categories", opts.Categories)
+	}
+	// Handling bool
+	if opts.Csv != nil && *opts.Csv {
+		argv = append(argv, "--csv")
+	}
+	// Handling other choice
+	// Handling bool
+	if opts.ItemCount != nil && *opts.ItemCount {
+		argv = append(argv, "--item_count")
+	}
+	// Handling other int
 	out, err := c.run(argv...)
 	return out, err
 }

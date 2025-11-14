@@ -35,6 +35,12 @@ func (c *Calibre) ShowMetadata(opts ShowMetadataOptions, args ...string) (string
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.Id)
+
+	// Command Line Options
+	// Handling bool
+	if opts.AsOpf != nil && *opts.AsOpf {
+		argv = append(argv, "--as-opf")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

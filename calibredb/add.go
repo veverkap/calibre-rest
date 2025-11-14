@@ -19,7 +19,7 @@ type AddOptions struct {
 	Cover string  // Path to the cover to use for the added book
 	Duplicates *bool  // Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.
 	Empty *bool  // Add an empty book (a book with no formats)
-	Identifier string  // Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY
+	Identifier []string  // Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY
 	Isbn string  // Set the ISBN of the added book(s)
 	Languages string  // A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)
 	Series string  // Set the series of the added book(s)
@@ -57,6 +57,59 @@ func (c *Calibre) Add(opts AddOptions, args ...string) (string, error) {
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.Files...)
+
+	// Command Line Options
+	// Handling string
+	if opts.Authors != "" {
+		argv = append(argv, "--authors", opts.Authors)
+	}
+	// Handling other choice
+	// Handling string
+	if opts.Cover != "" {
+		argv = append(argv, "--cover", opts.Cover)
+	}
+	// Handling bool
+	if opts.Duplicates != nil && *opts.Duplicates {
+		argv = append(argv, "--duplicates")
+	}
+	// Handling bool
+	if opts.Empty != nil && *opts.Empty {
+		argv = append(argv, "--empty")
+	}
+	// Handling []string
+	if len(opts.Identifier) > 0 {
+		argv = append(argv, "--identifier")
+		argv = append(argv, opts.Identifier...)
+	}
+	// Handling string
+	if opts.Isbn != "" {
+		argv = append(argv, "--isbn", opts.Isbn)
+	}
+	// Handling string
+	if opts.Languages != "" {
+		argv = append(argv, "--languages", opts.Languages)
+	}
+	// Handling string
+	if opts.Series != "" {
+		argv = append(argv, "--series", opts.Series)
+	}
+	// Handling other float
+	// Handling string
+	if opts.Tags != "" {
+		argv = append(argv, "--tags", opts.Tags)
+	}
+	// Handling string
+	if opts.Title != "" {
+		argv = append(argv, "--title", opts.Title)
+	}
+	// Handling bool
+	if opts.OneBookPerDirectory != nil && *opts.OneBookPerDirectory {
+		argv = append(argv, "--one-book-per-directory")
+	}
+	// Handling bool
+	if opts.Recurse != nil && *opts.Recurse {
+		argv = append(argv, "--recurse")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

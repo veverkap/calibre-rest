@@ -10,16 +10,23 @@ import (
 )
 
 type Calibre struct {
-	LibraryPath string `json:"library-path,omitempty"`
-	Username    string `json:"username,omitempty"`
-	Password    string `json:"password,omitempty"`
-	Timeout     string `json:"timeout,omitempty"`
-	OnError     func(error)
+	CalibreDBLocation string `json:"calibredb_location,omitempty"`
+	LibraryPath       string `json:"library-path,omitempty"`
+	Username          string `json:"username,omitempty"`
+	Password          string `json:"password,omitempty"`
+	Timeout           string `json:"timeout,omitempty"`
+	OnError           func(error)
 
 	validate *validator.Validate
 }
 
 type CalibreOption func(*Calibre)
+
+func WithCalibreDBLocation(path string) CalibreOption {
+	return func(c *Calibre) {
+		c.CalibreDBLocation = path
+	}
+}
 
 func WithLibraryPath(path string) CalibreOption {
 	return func(c *Calibre) {
@@ -78,7 +85,7 @@ func (c *Calibre) Help() string {
 
 func (c *Calibre) run(argv ...string) (string, error) {
 	argv = append(argv, "--with-library="+c.LibraryPath)
-	out, err := exec.Command("/Applications/calibre.app/Contents/MacOS/calibredb", argv...).CombinedOutput()
+	out, err := exec.Command(c.CalibreDBLocation, argv...).CombinedOutput()
 	if err != nil {
 		if c.OnError != nil {
 			c.OnError(err)
@@ -93,8 +100,6 @@ func (c *Calibre) run(argv ...string) (string, error) {
 }
 
 func filtered(output []byte) string {
-	outputstring := string(output)
-	outputLines := strings.Split(outputstring, "\n")
 	// The format of the error is a traceback followed by the actual error message. We want to extract only the actual error message.
 	// Example:
 	// 	Traceback (most recent call last):
@@ -114,6 +119,8 @@ func filtered(output []byte) string {
 	//   File "src/cursor.c", line 189, in resetcursor
 	// apsw.ConstraintError: UNIQUE constraint failed: custom_columns.label
 	// Integration status: False
+	outputstring := string(output)
+	outputLines := strings.Split(outputstring, "\n")
 	//
 	// The last line should be removed.
 	// remove any blank lines at the end
@@ -132,9 +139,7 @@ func filtered(output []byte) string {
 				filteredLines = append(filteredLines, line)
 			}
 		}
-		return filteredLines[len(filteredLines)-1]
+		return strings.Join(filteredLines, "\n")
 	}
 	return outputstring
 }
-
-// cmd := exec.Command("/Applications/calibre.app/Contents/MacOS/calibredb", "list", "--limit=5", "-f", "title,authors,author_sort,tags,isbn", "--for-machine", "--with-library=.")

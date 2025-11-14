@@ -41,6 +41,12 @@ func (c *Calibre) SetCustom(opts SetCustomOptions, args ...string) (string, erro
 	argv = append(argv, opts.Column)
 	argv = append(argv, opts.Id)
 	argv = append(argv, opts.Value)
+
+	// Command Line Options
+	// Handling bool
+	if opts.Append != nil && *opts.Append {
+		argv = append(argv, "--append")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

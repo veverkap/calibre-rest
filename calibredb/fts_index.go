@@ -42,6 +42,13 @@ func (c *Calibre) FtsIndex(opts FtsIndexOptions, args ...string) (string, error)
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.EnableDisableStatusReindex)
+
+	// Command Line Options
+	// Handling other choice
+	// Handling bool
+	if opts.WaitForCompletion != nil && *opts.WaitForCompletion {
+		argv = append(argv, "--wait-for-completion")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

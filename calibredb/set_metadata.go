@@ -19,7 +19,7 @@ type SetMetadataOptions struct {
 	Path string  `validate:"required"`
 
 	// Command Line Options
-	Field string  // The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.
+	Field []string  // The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.
 	ListFields *bool  // List the metadata field names that can be used with the --field option
 }
 
@@ -42,6 +42,17 @@ func (c *Calibre) SetMetadata(opts SetMetadataOptions, args ...string) (string, 
 	// Command Line Arguments
 	argv = append(argv, opts.BookId)
 	argv = append(argv, opts.Path)
+
+	// Command Line Options
+	// Handling []string
+	if len(opts.Field) > 0 {
+		argv = append(argv, "--field")
+		argv = append(argv, opts.Field...)
+	}
+	// Handling bool
+	if opts.ListFields != nil && *opts.ListFields {
+		argv = append(argv, "--list-fields")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

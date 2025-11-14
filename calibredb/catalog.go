@@ -40,6 +40,20 @@ func (c *Calibre) Catalog(opts CatalogOptions, args ...string) (string, error) {
 	}
 	// Command Line Arguments
 	argv = append(argv, opts.Path)
+
+	// Command Line Options
+	// Handling string
+	if opts.Ids != "" {
+		argv = append(argv, "--ids", opts.Ids)
+	}
+	// Handling string
+	if opts.Search != "" {
+		argv = append(argv, "--search", opts.Search)
+	}
+	// Handling bool
+	if opts.Verbose != nil && *opts.Verbose {
+		argv = append(argv, "--verbose")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

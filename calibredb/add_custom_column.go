@@ -41,6 +41,16 @@ func (c *Calibre) AddCustomColumn(opts AddCustomColumnOptions, args ...string) (
 	argv = append(argv, opts.Label)
 	argv = append(argv, opts.Name)
 	argv = append(argv, opts.Datatype)
+
+	// Command Line Options
+	// Handling string
+	if opts.Display != "" {
+		argv = append(argv, "--display", opts.Display)
+	}
+	// Handling bool
+	if opts.IsMultiple != nil && *opts.IsMultiple {
+		argv = append(argv, "--is-multiple")
+	}
 	out, err := c.run(argv...)
 	return out, err
 }
