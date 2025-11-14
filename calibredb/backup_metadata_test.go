@@ -19,7 +19,7 @@ func TestCalibre_BackupMetadataHelp(t *testing.T) {
 	// Call BackupMetadataHelp - this will fail if calibredb is not installed
 	// but we test that the method exists and can be called
 	help := c.BackupMetadataHelp()
-	
+
 	// The help output should contain something (error message or actual help)
 	if help == "" {
 		t.Error("BackupMetadataHelp() returned empty string")
