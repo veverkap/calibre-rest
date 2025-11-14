@@ -92,14 +92,14 @@ func (c *Calibre) run(argv ...string) (string, error) {
 		}
 		if out != nil {
 			// this is a stacktrace followed by the actual error message. We want to extract only the actual error message.
-			return "", errors.New(filtered(out))
+			return "", errors.New(filtered(out, true))
 		}
 		return "", errors.New(err.Error())
 	}
-	return filtered(out), nil
+	return filtered(out, false), nil
 }
 
-func filtered(output []byte) string {
+func filtered(output []byte, isError bool) string {
 	// The format of the error is a traceback followed by the actual error message. We want to extract only the actual error message.
 	// Example:
 	// 	Traceback (most recent call last):
@@ -121,25 +121,18 @@ func filtered(output []byte) string {
 	// Integration status: False
 	outputstring := string(output)
 	outputLines := strings.Split(outputstring, "\n")
-	//
-	// The last line should be removed.
-	// remove any blank lines at the end
-	for line := range outputLines {
-		if outputLines[len(outputLines)-1-line] != "" && !strings.HasPrefix(outputLines[len(outputLines)-1-line], "Integration status:") {
-			outputLines = outputLines[:len(outputLines)-line]
-			break
+	// remove any lines that start with "Integration status:" or that are blank
+	filteredLines := make([]string, 0, len(outputLines))
+	for _, line := range outputLines {
+		if line != "" && !strings.HasPrefix(line, "Integration status:") {
+			filteredLines = append(filteredLines, line)
 		}
 	}
-	// return the last line if it exists
-	if len(outputLines) > 0 {
-		// remove any lines that start with "Integration status:"
-		filteredLines := make([]string, 0, len(outputLines))
-		for _, line := range outputLines {
-			if !strings.HasPrefix(line, "Integration status:") {
-				filteredLines = append(filteredLines, line)
-			}
+	if isError {
+		// return the last line only
+		if len(filteredLines) > 0 {
+			return filteredLines[len(filteredLines)-1]
 		}
-		return strings.Join(filteredLines, "\n")
 	}
-	return outputstring
+	return strings.Join(filteredLines, "\n")
 }
