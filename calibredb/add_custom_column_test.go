@@ -81,7 +81,7 @@ func TestCalibre_AddCustomColumn(t *testing.T) {
 			defer func() { _ = os.RemoveAll(tempDir) }()
 			c := calibredb.NewCalibre(
 				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation("/Applications/calibre.app/Contents/MacOS/calibredb"),
+				calibredb.WithCalibreDBLocation(getCalibreDBPath()),
 			)
 			got, gotErr := c.AddCustomColumn(tt.opts, tt.args...)
 			if gotErr != nil {

@@ -55,7 +55,7 @@ func TestCalibre_AddFormat(t *testing.T) {
 			defer func() { _ = os.RemoveAll(tempDir) }()
 			c := calibredb.NewCalibre(
 				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation("/Applications/calibre.app/Contents/MacOS/calibredb"),
+				calibredb.WithCalibreDBLocation(getCalibreDBPath()),
 			)
 
 			got, gotErr := c.AddFormat(tt.opts, tt.args...)

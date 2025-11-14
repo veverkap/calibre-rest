@@ -3,6 +3,7 @@
 *.out
 *.o
 *.a
+*.test
 
 # Build and cache
 bin/
