@@ -25,7 +25,8 @@ jobs:
       - name: Install Calibre
         run: |
           curl -L https://calibre-ebook.com/dist/src | tar xvJ
-          cd calibre* && sudo python3 setup.py install
+          cd calibre* 
+          sudo python3 setup.py install
           which calibredb
           calibredb --version
       
