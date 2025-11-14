@@ -24,6 +24,7 @@ jobs:
       
       - name: Install Calibre
         run: |
+          sudo apt install qt5-qmake libqt5-dev
           curl -L https://calibre-ebook.com/dist/src | tar xvJ
           cd calibre-8.14.0
           sudo python3 setup.py install
