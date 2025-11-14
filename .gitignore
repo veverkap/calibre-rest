@@ -17,3 +17,5 @@ build/
 .DS_Store
 generated/
 .env
+coverage.txt
+*.coverprofile
