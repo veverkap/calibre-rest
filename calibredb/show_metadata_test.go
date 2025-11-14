@@ -13,7 +13,7 @@ func TestCalibre_ShowMetadataHelp(t *testing.T) {
 	defer func() { _ = os.RemoveAll(tempDir) }()
 	c := calibredb.NewCalibre(
 		calibredb.WithLibraryPath(tempDir),
-		calibredb.WithCalibreDBLocation("/Applications/calibre.app/Contents/MacOS/calibredb"),
+		calibredb.WithCalibreDBLocation(getCalibreDBPath()),
 	)
 
 	got := c.ShowMetadataHelp()
@@ -101,7 +101,7 @@ func TestCalibre_ShowMetadata(t *testing.T) {
 			defer func() { _ = os.RemoveAll(tempDir) }()
 			c := calibredb.NewCalibre(
 				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation("/Applications/calibre.app/Contents/MacOS/calibredb"),
+				calibredb.WithCalibreDBLocation(getCalibreDBPath()),
 			)
 
 			got, gotErr := c.ShowMetadata(tt.opts, tt.args...)
