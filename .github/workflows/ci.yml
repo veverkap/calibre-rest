@@ -24,13 +24,10 @@ jobs:
       
       - name: Install Calibre
         run: |
-          sudo apt install qt5-qmake libqt5-dev
-          curl -L https://calibre-ebook.com/dist/src | tar xvJ
-          cd calibre-8.14.0
-          sudo python3 setup.py install
-          which calibredb
-          calibredb --version
-      
+          wget https://github.com/kovidgoyal/calibre/releases/download/v8.14.0/calibre-8.14.0-x86_64.txz 
+          tar Jxvf calibre-8.14.0-x86_64.txz -C /opt/ > /dev/null
+          /opt/calibredb --version
+
       - name: Download Go dependencies
         run: go mod download
       
@@ -39,5 +36,5 @@ jobs:
       
       - name: Run tests
         env:
-          CALIBREDB_PATH: /opt/calibre/calibredb
+          CALIBREDB_PATH: /opt/calibredb
         run: go test -v ./...
