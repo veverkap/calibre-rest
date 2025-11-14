@@ -10,6 +10,40 @@ import (
 	"github.com/veverkap/calibre-rest/calibredb"
 )
 
+// findCalibredb attempts to locate the calibredb binary in the following order:
+// 1. CALIBREDB_PATH environment variable
+// 2. Common installation locations
+// 3. System PATH using exec.LookPath
+func findCalibredb() string {
+	// First check environment variable
+	if envPath := os.Getenv("CALIBREDB_PATH"); envPath != "" {
+		if _, err := os.Stat(envPath); err == nil {
+			return envPath
+		}
+	}
+
+	// Try common locations
+	calibredbPaths := []string{
+		"/usr/bin/calibredb",
+		"/usr/local/bin/calibredb",
+		"/opt/calibredb", // CI location
+		"/Applications/calibre.app/Contents/MacOS/calibredb",
+	}
+
+	for _, path := range calibredbPaths {
+		if _, err := os.Stat(path); err == nil {
+			return path
+		}
+	}
+
+	// Finally, try PATH
+	if path, err := exec.LookPath("calibredb"); err == nil {
+		return path
+	}
+
+	return ""
+}
+
 func TestNewCalibre(t *testing.T) {
 	tests := []struct {
 		name string
@@ -178,28 +212,7 @@ func TestCalibre_Version(t *testing.T) {
 }
 
 func TestCalibre_Version_WithRealCalibredb(t *testing.T) {
-	// Try to find calibredb in common locations
-	calibredbPaths := []string{
-		"/usr/bin/calibredb",
-		"/usr/local/bin/calibredb",
-		"/Applications/calibre.app/Contents/MacOS/calibredb",
-	}
-
-	var calibredbPath string
-	for _, path := range calibredbPaths {
-		if _, err := os.Stat(path); err == nil {
-			calibredbPath = path
-			break
-		}
-	}
-
-	if calibredbPath == "" {
-		// Also try 'which calibredb'
-		if path, err := exec.LookPath("calibredb"); err == nil {
-			calibredbPath = path
-		}
-	}
-
+	calibredbPath := findCalibredb()
 	if calibredbPath == "" {
 		t.Skip("calibredb not found, skipping test with real calibredb")
 	}
@@ -260,28 +273,7 @@ func TestCalibre_Help(t *testing.T) {
 }
 
 func TestCalibre_Help_WithRealCalibredb(t *testing.T) {
-	// Try to find calibredb in common locations
-	calibredbPaths := []string{
-		"/usr/bin/calibredb",
-		"/usr/local/bin/calibredb",
-		"/Applications/calibre.app/Contents/MacOS/calibredb",
-	}
-
-	var calibredbPath string
-	for _, path := range calibredbPaths {
-		if _, err := os.Stat(path); err == nil {
-			calibredbPath = path
-			break
-		}
-	}
-
-	if calibredbPath == "" {
-		// Also try 'which calibredb'
-		if path, err := exec.LookPath("calibredb"); err == nil {
-			calibredbPath = path
-		}
-	}
-
+	calibredbPath := findCalibredb()
 	if calibredbPath == "" {
 		t.Skip("calibredb not found, skipping test with real calibredb")
 	}
@@ -426,27 +418,7 @@ func TestCalibre_EmptyOptions(t *testing.T) {
 }
 
 func TestCalibre_Version_SuccessPath(t *testing.T) {
-	// This test will pass if calibredb is installed, otherwise it will skip
-	calibredbPaths := []string{
-		"/usr/bin/calibredb",
-		"/usr/local/bin/calibredb",
-		"/Applications/calibre.app/Contents/MacOS/calibredb",
-	}
-
-	var calibredbPath string
-	for _, path := range calibredbPaths {
-		if _, err := os.Stat(path); err == nil {
-			calibredbPath = path
-			break
-		}
-	}
-
-	if calibredbPath == "" {
-		if path, err := exec.LookPath("calibredb"); err == nil {
-			calibredbPath = path
-		}
-	}
-
+	calibredbPath := findCalibredb()
 	if calibredbPath == "" {
 		t.Skip("calibredb not found, skipping success path test")
 	}
@@ -477,27 +449,7 @@ func TestCalibre_Version_SuccessPath(t *testing.T) {
 }
 
 func TestCalibre_Help_SuccessPath(t *testing.T) {
-	// This test will pass if calibredb is installed, otherwise it will skip
-	calibredbPaths := []string{
-		"/usr/bin/calibredb",
-		"/usr/local/bin/calibredb",
-		"/Applications/calibre.app/Contents/MacOS/calibredb",
-	}
-
-	var calibredbPath string
-	for _, path := range calibredbPaths {
-		if _, err := os.Stat(path); err == nil {
-			calibredbPath = path
-			break
-		}
-	}
-
-	if calibredbPath == "" {
-		if path, err := exec.LookPath("calibredb"); err == nil {
-			calibredbPath = path
-		}
-	}
-
+	calibredbPath := findCalibredb()
 	if calibredbPath == "" {
 		t.Skip("calibredb not found, skipping success path test")
 	}
