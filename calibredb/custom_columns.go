@@ -15,9 +15,21 @@ type CustomColumnsOptions struct {
 }
 
 func (c *Calibre) CustomColumnsHelp() string {
-	return c.run("custom_columns", "-h")
+	if out, err := c.run("custom_columns", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) CustomColumns(opts CustomColumnsOptions, args ...string) string {
-	return "custom_columns"
+func (c *Calibre) CustomColumns(opts CustomColumnsOptions, args ...string) (string, error) {
+	argv := []string{"custom_columns"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

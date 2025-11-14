@@ -40,9 +40,23 @@ const (
 )
 
 func (c *Calibre) AddHelp() string {
-	return c.run("add", "-h")
+	if out, err := c.run("add", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) Add(opts AddOptions, args ...string) string {
-	return "add"
+func (c *Calibre) Add(opts AddOptions, args ...string) (string, error) {
+	argv := []string{"add"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Files...)
+	out, err := c.run(argv...)
+	return out, err
 }

@@ -23,9 +23,23 @@ type CatalogOptions struct {
 }
 
 func (c *Calibre) CatalogHelp() string {
-	return c.run("catalog", "-h")
+	if out, err := c.run("catalog", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) Catalog(opts CatalogOptions, args ...string) string {
-	return "catalog"
+func (c *Calibre) Catalog(opts CatalogOptions, args ...string) (string, error) {
+	argv := []string{"catalog"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Path)
+	out, err := c.run(argv...)
+	return out, err
 }

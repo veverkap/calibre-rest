@@ -18,9 +18,23 @@ type ShowMetadataOptions struct {
 }
 
 func (c *Calibre) ShowMetadataHelp() string {
-	return c.run("show_metadata", "-h")
+	if out, err := c.run("show_metadata", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) ShowMetadata(opts ShowMetadataOptions, args ...string) string {
-	return "show_metadata"
+func (c *Calibre) ShowMetadata(opts ShowMetadataOptions, args ...string) (string, error) {
+	argv := []string{"show_metadata"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Id)
+	out, err := c.run(argv...)
+	return out, err
 }

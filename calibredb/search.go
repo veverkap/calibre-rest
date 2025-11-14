@@ -20,9 +20,24 @@ type SearchOptions struct {
 }
 
 func (c *Calibre) SearchHelp() string {
-	return c.run("search", "-h")
+	if out, err := c.run("search", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) Search(opts SearchOptions, args ...string) string {
-	return "search"
+func (c *Calibre) Search(opts SearchOptions, args ...string) (string, error) {
+	argv := []string{"search"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Search)
+	argv = append(argv, opts.Expression)
+	out, err := c.run(argv...)
+	return out, err
 }

@@ -14,9 +14,21 @@ type SavedSearchesOptions struct {
 }
 
 func (c *Calibre) SavedSearchesHelp() string {
-	return c.run("saved_searches", "-h")
+	if out, err := c.run("saved_searches", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) SavedSearches(opts SavedSearchesOptions, args ...string) string {
-	return "saved_searches"
+func (c *Calibre) SavedSearches(opts SavedSearchesOptions, args ...string) (string, error) {
+	argv := []string{"saved_searches"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

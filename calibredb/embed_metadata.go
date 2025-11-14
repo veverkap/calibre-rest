@@ -23,9 +23,23 @@ type EmbedMetadataOptions struct {
 }
 
 func (c *Calibre) EmbedMetadataHelp() string {
-	return c.run("embed_metadata", "-h")
+	if out, err := c.run("embed_metadata", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) EmbedMetadata(opts EmbedMetadataOptions, args ...string) string {
-	return "embed_metadata"
+func (c *Calibre) EmbedMetadata(opts EmbedMetadataOptions, args ...string) (string, error) {
+	argv := []string{"embed_metadata"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.BookId)
+	out, err := c.run(argv...)
+	return out, err
 }

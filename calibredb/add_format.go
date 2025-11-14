@@ -19,9 +19,24 @@ type AddFormatOptions struct {
 }
 
 func (c *Calibre) AddFormatHelp() string {
-	return c.run("add_format", "-h")
+	if out, err := c.run("add_format", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) AddFormat(opts AddFormatOptions, args ...string) string {
-	return "add_format"
+func (c *Calibre) AddFormat(opts AddFormatOptions, args ...string) (string, error) {
+	argv := []string{"add_format"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Id)
+	argv = append(argv, opts.EbookFile)
+	out, err := c.run(argv...)
+	return out, err
 }

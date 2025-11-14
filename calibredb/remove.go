@@ -17,9 +17,23 @@ type RemoveOptions struct {
 }
 
 func (c *Calibre) RemoveHelp() string {
-	return c.run("remove", "-h")
+	if out, err := c.run("remove", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) Remove(opts RemoveOptions, args ...string) string {
-	return "remove"
+func (c *Calibre) Remove(opts RemoveOptions, args ...string) (string, error) {
+	argv := []string{"remove"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Ids...)
+	out, err := c.run(argv...)
+	return out, err
 }

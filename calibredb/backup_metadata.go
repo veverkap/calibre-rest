@@ -17,9 +17,21 @@ type BackupMetadataOptions struct {
 }
 
 func (c *Calibre) BackupMetadataHelp() string {
-	return c.run("backup_metadata", "-h")
+	if out, err := c.run("backup_metadata", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) BackupMetadata(opts BackupMetadataOptions, args ...string) string {
-	return "backup_metadata"
+func (c *Calibre) BackupMetadata(opts BackupMetadataOptions, args ...string) (string, error) {
+	argv := []string{"backup_metadata"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

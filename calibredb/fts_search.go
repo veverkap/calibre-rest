@@ -31,9 +31,24 @@ const (
 )
 
 func (c *Calibre) FtsSearchHelp() string {
-	return c.run("fts_search", "-h")
+	if out, err := c.run("fts_search", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) FtsSearch(opts FtsSearchOptions, args ...string) string {
-	return "fts_search"
+func (c *Calibre) FtsSearch(opts FtsSearchOptions, args ...string) (string, error) {
+	argv := []string{"fts_search"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Search)
+	argv = append(argv, opts.Expression)
+	out, err := c.run(argv...)
+	return out, err
 }

@@ -24,9 +24,24 @@ type SetMetadataOptions struct {
 }
 
 func (c *Calibre) SetMetadataHelp() string {
-	return c.run("set_metadata", "-h")
+	if out, err := c.run("set_metadata", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) SetMetadata(opts SetMetadataOptions, args ...string) string {
-	return "set_metadata"
+func (c *Calibre) SetMetadata(opts SetMetadataOptions, args ...string) (string, error) {
+	argv := []string{"set_metadata"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.BookId)
+	argv = append(argv, opts.Path)
+	out, err := c.run(argv...)
+	return out, err
 }

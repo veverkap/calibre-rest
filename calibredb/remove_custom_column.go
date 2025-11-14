@@ -18,9 +18,23 @@ type RemoveCustomColumnOptions struct {
 }
 
 func (c *Calibre) RemoveCustomColumnHelp() string {
-	return c.run("remove_custom_column", "-h")
+	if out, err := c.run("remove_custom_column", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) RemoveCustomColumn(opts RemoveCustomColumnOptions, args ...string) string {
-	return "remove_custom_column"
+func (c *Calibre) RemoveCustomColumn(opts RemoveCustomColumnOptions, args ...string) (string, error) {
+	argv := []string{"remove_custom_column"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Label)
+	out, err := c.run(argv...)
+	return out, err
 }

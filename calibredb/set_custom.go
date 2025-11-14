@@ -22,9 +22,25 @@ type SetCustomOptions struct {
 }
 
 func (c *Calibre) SetCustomHelp() string {
-	return c.run("set_custom", "-h")
+	if out, err := c.run("set_custom", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) SetCustom(opts SetCustomOptions, args ...string) string {
-	return "set_custom"
+func (c *Calibre) SetCustom(opts SetCustomOptions, args ...string) (string, error) {
+	argv := []string{"set_custom"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Column)
+	argv = append(argv, opts.Id)
+	argv = append(argv, opts.Value)
+	out, err := c.run(argv...)
+	return out, err
 }

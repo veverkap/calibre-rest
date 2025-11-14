@@ -23,9 +23,23 @@ type ExportOptions struct {
 }
 
 func (c *Calibre) ExportHelp() string {
-	return c.run("export", "-h")
+	if out, err := c.run("export", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) Export(opts ExportOptions, args ...string) string {
-	return "export"
+func (c *Calibre) Export(opts ExportOptions, args ...string) (string, error) {
+	argv := []string{"export"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Ids...)
+	out, err := c.run(argv...)
+	return out, err
 }

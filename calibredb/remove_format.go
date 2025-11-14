@@ -15,9 +15,24 @@ type RemoveFormatOptions struct {
 }
 
 func (c *Calibre) RemoveFormatHelp() string {
-	return c.run("remove_format", "-h")
+	if out, err := c.run("remove_format", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) RemoveFormat(opts RemoveFormatOptions, args ...string) string {
-	return "remove_format"
+func (c *Calibre) RemoveFormat(opts RemoveFormatOptions, args ...string) (string, error) {
+	argv := []string{"remove_format"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Id)
+	argv = append(argv, opts.Fmt)
+	out, err := c.run(argv...)
+	return out, err
 }

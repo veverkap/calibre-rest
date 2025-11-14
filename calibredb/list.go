@@ -26,9 +26,21 @@ type ListOptions struct {
 }
 
 func (c *Calibre) ListHelp() string {
-	return c.run("list", "-h")
+	if out, err := c.run("list", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) List(opts ListOptions, args ...string) string {
-	return "list"
+func (c *Calibre) List(opts ListOptions, args ...string) (string, error) {
+	argv := []string{"list"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

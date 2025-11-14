@@ -19,9 +19,21 @@ type CheckLibraryOptions struct {
 }
 
 func (c *Calibre) CheckLibraryHelp() string {
-	return c.run("check_library", "-h")
+	if out, err := c.run("check_library", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) CheckLibrary(opts CheckLibraryOptions, args ...string) string {
-	return "check_library"
+func (c *Calibre) CheckLibrary(opts CheckLibraryOptions, args ...string) (string, error) {
+	argv := []string{"check_library"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

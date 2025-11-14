@@ -22,9 +22,25 @@ type AddCustomColumnOptions struct {
 }
 
 func (c *Calibre) AddCustomColumnHelp() string {
-	return c.run("add_custom_column", "-h")
+	if out, err := c.run("add_custom_column", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) AddCustomColumn(opts AddCustomColumnOptions, args ...string) string {
-	return "add_custom_column"
+func (c *Calibre) AddCustomColumn(opts AddCustomColumnOptions, args ...string) (string, error) {
+	argv := []string{"add_custom_column"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Label)
+	argv = append(argv, opts.Name)
+	argv = append(argv, opts.Datatype)
+	out, err := c.run(argv...)
+	return out, err
 }

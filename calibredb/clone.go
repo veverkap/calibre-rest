@@ -15,9 +15,23 @@ type CloneOptions struct {
 }
 
 func (c *Calibre) CloneHelp() string {
-	return c.run("clone", "-h")
+	if out, err := c.run("clone", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) Clone(opts CloneOptions, args ...string) string {
-	return "clone"
+func (c *Calibre) Clone(opts CloneOptions, args ...string) (string, error) {
+	argv := []string{"clone"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.Path)
+	out, err := c.run(argv...)
+	return out, err
 }

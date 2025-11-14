@@ -17,9 +17,21 @@ type RestoreDatabaseOptions struct {
 }
 
 func (c *Calibre) RestoreDatabaseHelp() string {
-	return c.run("restore_database", "-h")
+	if out, err := c.run("restore_database", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) RestoreDatabase(opts RestoreDatabaseOptions, args ...string) string {
-	return "restore_database"
+func (c *Calibre) RestoreDatabase(opts RestoreDatabaseOptions, args ...string) (string, error) {
+	argv := []string{"restore_database"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

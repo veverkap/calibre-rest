@@ -26,9 +26,21 @@ const (
 )
 
 func (c *Calibre) ListCategoriesHelp() string {
-	return c.run("list_categories", "-h")
+	if out, err := c.run("list_categories", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) ListCategories(opts ListCategoriesOptions, args ...string) string {
-	return "list_categories"
+func (c *Calibre) ListCategories(opts ListCategoriesOptions, args ...string) (string, error) {
+	argv := []string{"list_categories"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run(argv...)
+	return out, err
 }

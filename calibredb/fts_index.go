@@ -25,9 +25,23 @@ const (
 )
 
 func (c *Calibre) FtsIndexHelp() string {
-	return c.run("fts_index", "-h")
+	if out, err := c.run("fts_index", "-h"); err != nil {
+		return err.Error()
+	} else {
+		return out
+	}
 }
 
-func (c *Calibre) FtsIndex(opts FtsIndexOptions, args ...string) string {
-	return "fts_index"
+func (c *Calibre) FtsIndex(opts FtsIndexOptions, args ...string) (string, error) {
+	argv := []string{"fts_index"}
+
+	// validate the command line arguments
+	err := c.validate.Struct(opts)
+	if err != nil {
+		return "", err
+	}
+	// Command Line Arguments
+	argv = append(argv, opts.EnableDisableStatusReindex)
+	out, err := c.run(argv...)
+	return out, err
 }
