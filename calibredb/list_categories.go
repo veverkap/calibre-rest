@@ -26,7 +26,9 @@ type ListCategoriesOptions struct {
 type DialectChoice string
 
 const (
-	CsvListDialects DialectChoice = "csv.list_dialects"
+	DialectExcel    DialectChoice = "excel"
+	DialectExcelTab DialectChoice = "excel-tab"
+	DialectUnix     DialectChoice = "unix"
 )
 
 func (c *Calibre) ListCategoriesHelp() string {

@@ -180,7 +180,20 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = os.WriteFile("/Users/veverkap/Code/personal/calibre-rest/combined_calibredb_options.json", jsonOut, 0644)
+	jsonOut, err := json.MarshalIndent(updatedcombined, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	// Determine output path: command-line argument, environment variable, or default
+	outputPath := "./combined_calibredb_options.json"
+	if envPath := os.Getenv("OUTPUT_PATH"); envPath != "" {
+		outputPath = envPath
+	}
+	if len(os.Args) > 1 {
+		outputPath = os.Args[1]
+	}
+	fmt.Printf("Writing output to: %s\n", outputPath)
+	err = os.WriteFile(outputPath, jsonOut, 0644)
 	if err != nil {
 		panic(err)
 	}
