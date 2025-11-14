@@ -4,8 +4,6 @@ package main
 import (
 	"context"
 	"fmt"
-
-	"github.com/veverkap/calibre-rest/internal/observability"
 )
 
 func main() {
@@ -19,14 +17,6 @@ func main() {
 
 // This is the real main function. That's why it's called realMain.
 func realMain(cancelCtx context.Context) error { //nolint:contextcheck // The newctx context comes from the StartTracer function, so it's already wrapped.
-	newctx, span := observability.StartTracer(cancelCtx, "cmd.http.main")
-	defer span.End()
-
-	config := observability.NewConfig()
-	logger := observability.NewFromConfig(config).WithContext(newctx)
-	defer logger.Sync()
-
-	logger.Info("Starting HTTP server...")
 
 	return nil
 }

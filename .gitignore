@@ -1,18 +1,19 @@
-*.pyc
-__pycache__
-.venv/*
-.envrc
+# Binaries
+*.exe
+*.out
+*.o
+*.a
 
-instance/*
-.pytest_cache/*
-.coverage
-testdata/*
-exports/*
+# Build and cache
+bin/
+build/
+*.db
+*.log
 
-calibre/*
-library/*
-*.ini
-
-# Go binaries
-calibre-rest
-calibre-rest-*
+# Go
+/vendor/
+/.idea/
+/.vscode/
+.DS_Store
+generated/
+.env

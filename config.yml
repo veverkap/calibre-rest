@@ -1,0 +1,11 @@
+scrapers:
+    - name: https://manual.calibre-ebook.com/generated/en/calibredb.html
+      url: https://manual.calibre-ebook.com/generated/en/calibredb.html
+      item: li.leaf-node > a.internal.reference
+      fields:
+        - name: field-0
+          type: url
+          location:
+            - attr: href
+      fetcher:
+        type: static
