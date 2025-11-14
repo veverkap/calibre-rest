@@ -10,8 +10,8 @@ package calibredb
 
 type RemoveFormatOptions struct {
 	// Command Line Arguments
-	Id string  `validate:"required"`
-	Fmt string  `validate:"required"`
+	Id  string `validate:"required"`
+	Fmt string `validate:"required"`
 }
 
 func (c *Calibre) RemoveFormatHelp() string {

@@ -11,10 +11,10 @@ package calibredb
 
 type ShowMetadataOptions struct {
 	// Command Line Arguments
-	Id string  `validate:"required"`
+	Id string `validate:"required"`
 
 	// Command Line Options
-	AsOpf *bool  // Print metadata in OPF form (XML)
+	AsOpf *bool // Print metadata in OPF form (XML)
 }
 
 func (c *Calibre) ShowMetadataHelp() string {

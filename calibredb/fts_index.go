@@ -10,11 +10,11 @@ package calibredb
 
 type FtsIndexOptions struct {
 	// Command Line Arguments
-	EnableDisableStatusReindex string  `validate:"required"`
+	EnableDisableStatusReindex string `validate:"required"`
 
 	// Command Line Options
-	IndexingSpeed IndexingSpeedChoice  // The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.
-	WaitForCompletion *bool  // Wait till all books are indexed, showing indexing progress periodically
+	IndexingSpeed     IndexingSpeedChoice // The speed of indexing. Use fast for fast indexing using all your computers resources and slow for less resource intensive indexing. Note that the speed is reset to slow after every invocation.
+	WaitForCompletion *bool               // Wait till all books are indexed, showing indexing progress periodically
 }
 
 type IndexingSpeedChoice string
@@ -44,7 +44,10 @@ func (c *Calibre) FtsIndex(opts FtsIndexOptions, args ...string) (string, error)
 	argv = append(argv, opts.EnableDisableStatusReindex)
 
 	// Command Line Options
-	// Handling other choice
+	// Handling choice
+	if opts.IndexingSpeed != "" {
+		argv = append(argv, "--indexing-speed", string(opts.IndexingSpeed))
+	}
 	// Handling bool
 	if opts.WaitForCompletion != nil && *opts.WaitForCompletion {
 		argv = append(argv, "--wait-for-completion")

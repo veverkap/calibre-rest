@@ -13,7 +13,7 @@ package calibredb
 type BackupMetadataOptions struct {
 
 	// Command Line Options
-	All *bool  // Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.
+	All *bool // Normally, this command only operates on books that have out of date OPF files. This option makes it operate on all books.
 }
 
 func (c *Calibre) BackupMetadataHelp() string {

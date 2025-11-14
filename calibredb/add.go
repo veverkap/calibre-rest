@@ -9,32 +9,36 @@
 
 package calibredb
 
+import (
+	"fmt"
+)
+
 type AddOptions struct {
 	// Command Line Arguments
-	Files []string  `validate:"required"`
+	Files []string `validate:"required"`
 
 	// Command Line Options
-	Authors string  // Set the authors of the added book(s)
-	Automerge AutomergeChoice  // If books with similar titles and authors are found, merge the incoming formats (files) automatically into existing book records. A value of " ignore " means duplicate formats are discarded. A value of " overwrite " means duplicate formats in the library are overwritten with the newly added files. A value of " new_record " means duplicate formats are placed into a new book record.
-	Cover string  // Path to the cover to use for the added book
-	Duplicates *bool  // Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.
-	Empty *bool  // Add an empty book (a book with no formats)
-	Identifier []string  // Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY
-	Isbn string  // Set the ISBN of the added book(s)
-	Languages string  // A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)
-	Series string  // Set the series of the added book(s)
-	SeriesIndex float64  // Set the series number of the added book(s)
-	Tags string  // Set the tags of the added book(s)
-	Title string  // Set the title of the added book(s)
-	OneBookPerDirectory *bool  // Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book
-	Recurse *bool  // Process folders recursively
+	Authors             string          // Set the authors of the added book(s)
+	Automerge           AutomergeChoice // If books with similar titles and authors are found, merge the incoming formats (files) automatically into existing book records. A value of " ignore " means duplicate formats are discarded. A value of " overwrite " means duplicate formats in the library are overwritten with the newly added files. A value of " new_record " means duplicate formats are placed into a new book record.
+	Cover               string          // Path to the cover to use for the added book
+	Duplicates          *bool           // Add books to database even if they already exist. Comparison is done based on book titles and authors. Note that the --automerge option takes precedence.
+	Empty               *bool           // Add an empty book (a book with no formats)
+	Identifier          []string        // Set the identifiers for this book, e.g. -I asin:XXX -I isbn:YYY
+	Isbn                string          // Set the ISBN of the added book(s)
+	Languages           string          // A comma separated list of languages (best to use ISO639 language codes, though some language names may also be recognized)
+	Series              string          // Set the series of the added book(s)
+	SeriesIndex         float64         // Set the series number of the added book(s)
+	Tags                string          // Set the tags of the added book(s)
+	Title               string          // Set the title of the added book(s)
+	OneBookPerDirectory *bool           // Assume that each folder has only a single logical book and that all files in it are different e-book formats of that book
+	Recurse             *bool           // Process folders recursively
 }
 
 type AutomergeChoice string
 
 const (
-	Disabled AutomergeChoice = "disabled"
-	Ignore AutomergeChoice = "ignore"
+	Disabled  AutomergeChoice = "disabled"
+	Ignore    AutomergeChoice = "ignore"
 	Overwrite AutomergeChoice = "overwrite"
 	NewRecord AutomergeChoice = "new_record"
 )
@@ -63,7 +67,10 @@ func (c *Calibre) Add(opts AddOptions, args ...string) (string, error) {
 	if opts.Authors != "" {
 		argv = append(argv, "--authors", opts.Authors)
 	}
-	// Handling other choice
+	// Handling choice
+	if opts.Automerge != "" {
+		argv = append(argv, "--automerge", string(opts.Automerge))
+	}
 	// Handling string
 	if opts.Cover != "" {
 		argv = append(argv, "--cover", opts.Cover)
@@ -93,7 +100,10 @@ func (c *Calibre) Add(opts AddOptions, args ...string) (string, error) {
 	if opts.Series != "" {
 		argv = append(argv, "--series", opts.Series)
 	}
-	// Handling other float
+	// Handling float
+	if opts.SeriesIndex != 0 {
+		argv = append(argv, "--series-index", fmt.Sprint(opts.SeriesIndex))
+	}
 	// Handling string
 	if opts.Tags != "" {
 		argv = append(argv, "--tags", opts.Tags)

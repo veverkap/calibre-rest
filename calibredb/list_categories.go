@@ -9,14 +9,18 @@
 
 package calibredb
 
+import (
+	"fmt"
+)
+
 type ListCategoriesOptions struct {
 
 	// Command Line Options
-	Categories string  // Comma-separated list of category lookup names. Default: all
-	Csv *bool  // Output in CSV
-	Dialect DialectChoice  // The type of CSV file to produce. Choices: excel, excel-tab, unix
-	ItemCount *bool  // Output only the number of items in a category instead of the counts per item within the category
-	Width int  // The maximum width of a single line in the output. Defaults to detecting screen size.
+	Categories string        // Comma-separated list of category lookup names. Default: all
+	Csv        *bool         // Output in CSV
+	Dialect    DialectChoice // The type of CSV file to produce. Choices: excel, excel-tab, unix
+	ItemCount  *bool         // Output only the number of items in a category instead of the counts per item within the category
+	Width      int           // The maximum width of a single line in the output. Defaults to detecting screen size.
 }
 
 type DialectChoice string
@@ -51,12 +55,18 @@ func (c *Calibre) ListCategories(opts ListCategoriesOptions, args ...string) (st
 	if opts.Csv != nil && *opts.Csv {
 		argv = append(argv, "--csv")
 	}
-	// Handling other choice
+	// Handling choice
+	if opts.Dialect != "" {
+		argv = append(argv, "--dialect", string(opts.Dialect))
+	}
 	// Handling bool
 	if opts.ItemCount != nil && *opts.ItemCount {
 		argv = append(argv, "--item_count")
 	}
-	// Handling other int
+	// Handling int
+	if opts.Width != 0 {
+		argv = append(argv, "--width", fmt.Sprint(opts.Width))
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

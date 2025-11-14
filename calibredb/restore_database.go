@@ -13,7 +13,7 @@ package calibredb
 type RestoreDatabaseOptions struct {
 
 	// Command Line Options
-	ReallyDoIt *bool  // Really do the recovery. The command will not run unless this option is specified.
+	ReallyDoIt *bool // Really do the recovery. The command will not run unless this option is specified.
 }
 
 func (c *Calibre) RestoreDatabaseHelp() string {

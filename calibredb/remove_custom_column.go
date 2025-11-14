@@ -11,10 +11,10 @@ package calibredb
 
 type RemoveCustomColumnOptions struct {
 	// Command Line Arguments
-	Label string  `validate:"required"`
+	Label string `validate:"required"`
 
 	// Command Line Options
-	Force *bool  // Do not ask for confirmation
+	Force *bool // Do not ask for confirmation
 }
 
 func (c *Calibre) RemoveCustomColumnHelp() string {

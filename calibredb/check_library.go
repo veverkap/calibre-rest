@@ -11,11 +11,11 @@ package calibredb
 type CheckLibraryOptions struct {
 
 	// Command Line Options
-	Csv *bool  // Output in CSV
-	IgnoreExtensions string  // Comma-separated list of extensions to ignore. Default: all
-	IgnoreNames string  // Comma-separated list of names to ignore. Default: all
-	Report string  // Comma-separated list of reports. Default: all
-	VacuumFtsDb *bool  // Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.
+	Csv              *bool  // Output in CSV
+	IgnoreExtensions string // Comma-separated list of extensions to ignore. Default: all
+	IgnoreNames      string // Comma-separated list of names to ignore. Default: all
+	Report           string // Comma-separated list of reports. Default: all
+	VacuumFtsDb      *bool  // Vacuum the full text search database. This can be very slow and memory intensive, depending on the size of the database.
 }
 
 func (c *Calibre) CheckLibraryHelp() string {

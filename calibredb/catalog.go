@@ -14,11 +14,11 @@ package calibredb
 
 type CatalogOptions struct {
 	// Command Line Arguments
-	Path string  `validate:"required"`
+	Path string `validate:"required"`
 
 	// Command Line Options
-	Ids string  // Comma-separated list of database IDs to catalog. If declared, --search is ignored. Default: all
-	Search string  // Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual. Default: no filtering
+	Ids     string // Comma-separated list of database IDs to catalog. If declared, --search is ignored. Default: all
+	Search  string // Filter the results by the search query. For the format of the search query, please see the search-related documentation in the User Manual. Default: no filtering
 	Verbose *bool  // Show detailed output information. Useful for debugging
 }
 

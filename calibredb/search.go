@@ -10,13 +10,17 @@
 
 package calibredb
 
+import (
+	"fmt"
+)
+
 type SearchOptions struct {
 	// Command Line Arguments
-	Search string  `validate:"required"`
-	Expression string  `validate:"required"`
+	Search     string `validate:"required"`
+	Expression string `validate:"required"`
 
 	// Command Line Options
-	Limit int  // The maximum number of results to return. Default is all results.
+	Limit int // The maximum number of results to return. Default is all results.
 }
 
 func (c *Calibre) SearchHelp() string {
@@ -40,7 +44,10 @@ func (c *Calibre) Search(opts SearchOptions, args ...string) (string, error) {
 	argv = append(argv, opts.Expression)
 
 	// Command Line Options
-	// Handling other int
+	// Handling int
+	if opts.Limit != 0 {
+		argv = append(argv, "--limit", fmt.Sprint(opts.Limit))
+	}
 	out, err := c.run(argv...)
 	return out, err
 }

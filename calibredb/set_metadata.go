@@ -15,12 +15,12 @@ package calibredb
 
 type SetMetadataOptions struct {
 	// Command Line Arguments
-	BookId string  `validate:"required"`
-	Path string  `validate:"required"`
+	BookId string `validate:"required"`
+	Path   string `validate:"required"`
 
 	// Command Line Options
-	Field []string  // The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.
-	ListFields *bool  // List the metadata field names that can be used with the --field option
+	Field      []string // The field to set. Format is field_name:value, for example: --field tags:tag1,tag2. Use --list-fields to get a list of all field names. You can specify this option multiple times to set multiple fields. Note: For languages you must use the ISO639 language codes (e.g. en for English, fr for French and so on). For identifiers, the syntax is --field identifiers:isbn:XXXX,doi:YYYYY. For boolean (yes/no) fields use true and false or yes and no.
+	ListFields *bool    // List the metadata field names that can be used with the --field option
 }
 
 func (c *Calibre) SetMetadataHelp() string {

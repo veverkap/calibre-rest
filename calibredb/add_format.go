@@ -10,12 +10,12 @@ package calibredb
 
 type AddFormatOptions struct {
 	// Command Line Arguments
-	Id string  `validate:"required"`
-	EbookFile string  `validate:"required"`
+	Id        string `validate:"required"`
+	EbookFile string `validate:"required"`
 
 	// Command Line Options
-	AsExtraDataFile *bool  // Add the file as an extra data file to the book, not an ebook format
-	DontReplace *bool  // Do not replace the format if it already exists
+	AsExtraDataFile *bool // Add the file as an extra data file to the book, not an ebook format
+	DontReplace     *bool // Do not replace the format if it already exists
 }
 
 func (c *Calibre) AddFormatHelp() string {

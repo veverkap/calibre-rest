@@ -11,7 +11,7 @@ package calibredb
 type CustomColumnsOptions struct {
 
 	// Command Line Options
-	Details *bool  // Show details for each column.
+	Details *bool // Show details for each column.
 }
 
 func (c *Calibre) CustomColumnsHelp() string {

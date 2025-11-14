@@ -13,13 +13,13 @@ package calibredb
 
 type ExportOptions struct {
 	// Command Line Arguments
-	Ids []string  `validate:"required"`
+	Ids []string `validate:"required"`
 
 	// Command Line Options
-	All *bool  // Export all books in database, ignoring the list of ids.
-	Progress *bool  // Report progress
+	All       *bool  // Export all books in database, ignoring the list of ids.
+	Progress  *bool  // Report progress
 	SingleDir *bool  // Export all books into a single folder
-	ToDir string  // Export books to the specified folder. Default is .
+	ToDir     string // Export books to the specified folder. Default is .
 }
 
 func (c *Calibre) ExportHelp() string {

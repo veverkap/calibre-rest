@@ -8,21 +8,25 @@
 
 package calibredb
 
+import (
+	"fmt"
+)
+
 type ListOptions struct {
 
 	// Command Line Options
-	Ascending *bool  // Sort results in ascending order
-	Fields string  // The fields to display when listing books in the database. Should be a comma separated list of fields. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: title,authors. The special field " all " can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating
-	ForMachine *bool  // Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.
-	Limit int  // The maximum number of results to display. Default: all
-	LineWidth int  // The maximum width of a single line in the output. Defaults to detecting screen size.
-	Prefix string  // The prefix for all file paths. Default is the absolute path to the library folder.
-	Search string  // Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering.
-	Separator string  // The string used to separate fields. Default is a space.
-	SortBy string  // The field by which to sort the results. You can specify multiple fields by separating them with commas. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating
-	Template string  // The template to run if " template " is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None
-	TemplateFile string  // Path to a file containing the template to run if " template " is in the field list. Default: None
-	TemplateHeading string  // Heading for the template column. Default: template. This option is ignored if the option --for-machine is set
+	Ascending       *bool  // Sort results in ascending order
+	Fields          string // The fields to display when listing books in the database. Should be a comma separated list of fields. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: title,authors. The special field " all " can be used to select all fields. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating
+	ForMachine      *bool  // Generate output in JSON format, which is more suitable for machine parsing. Causes the line width and separator options to be ignored.
+	Limit           int    // The maximum number of results to display. Default: all
+	LineWidth       int    // The maximum width of a single line in the output. Defaults to detecting screen size.
+	Prefix          string // The prefix for all file paths. Default is the absolute path to the library folder.
+	Search          string // Filter the results by the search query. For the format of the search query, please see the search related documentation in the User Manual. Default is to do no filtering.
+	Separator       string // The string used to separate fields. Default is a space.
+	SortBy          string // The field by which to sort the results. You can specify multiple fields by separating them with commas. Available fields: author_sort, authors, comments, cover, formats, identifiers, isbn, languages, last_modified, pubdate, publisher, rating, series, series_index, size, tags, template, timestamp, title, uuid Default: id. In addition to the builtin fields above, custom fields are also available as *field_name, for example, for a custom field #rating, use the name: *rating
+	Template        string // The template to run if " template " is in the field list. Note that templates are ignored while connecting to a calibre server. Default: None
+	TemplateFile    string // Path to a file containing the template to run if " template " is in the field list. Default: None
+	TemplateHeading string // Heading for the template column. Default: template. This option is ignored if the option --for-machine is set
 }
 
 func (c *Calibre) ListHelp() string {
@@ -55,8 +59,14 @@ func (c *Calibre) List(opts ListOptions, args ...string) (string, error) {
 	if opts.ForMachine != nil && *opts.ForMachine {
 		argv = append(argv, "--for-machine")
 	}
-	// Handling other int
-	// Handling other int
+	// Handling int
+	if opts.Limit != 0 {
+		argv = append(argv, "--limit", fmt.Sprint(opts.Limit))
+	}
+	// Handling int
+	if opts.LineWidth != 0 {
+		argv = append(argv, "--line-width", fmt.Sprint(opts.LineWidth))
+	}
 	// Handling string
 	if opts.Prefix != "" {
 		argv = append(argv, "--prefix", opts.Prefix)

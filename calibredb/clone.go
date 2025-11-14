@@ -11,7 +11,7 @@ package calibredb
 
 type CloneOptions struct {
 	// Command Line Arguments
-	Path string  `validate:"required"`
+	Path string `validate:"required"`
 }
 
 func (c *Calibre) CloneHelp() string {

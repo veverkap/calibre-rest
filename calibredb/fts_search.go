@@ -8,19 +8,23 @@
 
 package calibredb
 
+import (
+	"fmt"
+)
+
 type FtsSearchOptions struct {
 	// Command Line Arguments
-	Search string  `validate:"required"`
-	Expression string  `validate:"required"`
+	Search     string `validate:"required"`
+	Expression string `validate:"required"`
 
 	// Command Line Options
-	DoNotMatchOnRelatedWords *bool  // Only match on exact words not related words. So correction will not match correcting.
-	IncludeSnippets *bool  // Include snippets of the text surrounding each match. Note that this makes searching much slower.
-	IndexingThreshold float64  // How much of the library must be indexed before searching is allowed, as a percentage. Defaults to 90
-	MatchEndMarker string  // The marker used to indicate the end of a matched word inside a snippet
-	MatchStartMarker string  // The marker used to indicate the start of a matched word inside a snippet
-	OutputFormat OutputFormatChoice  // The format to output the search results in. Either " text " for plain text or " json " for JSON output.
-	RestrictTo string  // Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.
+	DoNotMatchOnRelatedWords *bool              // Only match on exact words not related words. So correction will not match correcting.
+	IncludeSnippets          *bool              // Include snippets of the text surrounding each match. Note that this makes searching much slower.
+	IndexingThreshold        float64            // How much of the library must be indexed before searching is allowed, as a percentage. Defaults to 90
+	MatchEndMarker           string             // The marker used to indicate the end of a matched word inside a snippet
+	MatchStartMarker         string             // The marker used to indicate the start of a matched word inside a snippet
+	OutputFormat             OutputFormatChoice // The format to output the search results in. Either " text " for plain text or " json " for JSON output.
+	RestrictTo               string             // Restrict the searched books, either using a search expression or ids. For example: ids:1,2,3 to restrict by ids or search:tag:foo to restrict to books having the tag foo.
 }
 
 type OutputFormatChoice string
@@ -59,7 +63,10 @@ func (c *Calibre) FtsSearch(opts FtsSearchOptions, args ...string) (string, erro
 	if opts.IncludeSnippets != nil && *opts.IncludeSnippets {
 		argv = append(argv, "--include-snippets")
 	}
-	// Handling other float
+	// Handling float
+	if opts.IndexingThreshold != 0 {
+		argv = append(argv, "--indexing-threshold", fmt.Sprint(opts.IndexingThreshold))
+	}
 	// Handling string
 	if opts.MatchEndMarker != "" {
 		argv = append(argv, "--match-end-marker", opts.MatchEndMarker)
@@ -68,7 +75,10 @@ func (c *Calibre) FtsSearch(opts FtsSearchOptions, args ...string) (string, erro
 	if opts.MatchStartMarker != "" {
 		argv = append(argv, "--match-start-marker", opts.MatchStartMarker)
 	}
-	// Handling other choice
+	// Handling choice
+	if opts.OutputFormat != "" {
+		argv = append(argv, "--output-format", string(opts.OutputFormat))
+	}
 	// Handling string
 	if opts.RestrictTo != "" {
 		argv = append(argv, "--restrict-to", opts.RestrictTo)

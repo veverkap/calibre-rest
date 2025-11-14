@@ -13,12 +13,12 @@ package calibredb
 
 type SetCustomOptions struct {
 	// Command Line Arguments
-	Column string  `validate:"required"`
-	Id string  `validate:"required"`
-	Value string  `validate:"required"`
+	Column string `validate:"required"`
+	Id     string `validate:"required"`
+	Value  string `validate:"required"`
 
 	// Command Line Options
-	Append *bool  // If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.
+	Append *bool // If the column stores multiple values, append the specified values to the existing ones, instead of replacing them.
 }
 
 func (c *Calibre) SetCustomHelp() string {

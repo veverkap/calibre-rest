@@ -10,10 +10,10 @@ package calibredb
 
 type RemoveOptions struct {
 	// Command Line Arguments
-	Ids []string  `validate:"required"`
+	Ids []string `validate:"required"`
 
 	// Command Line Options
-	Permanent *bool  // Do not use the Recycle Bin
+	Permanent *bool // Do not use the Recycle Bin
 }
 
 func (c *Calibre) RemoveHelp() string {

@@ -16,10 +16,10 @@ package calibredb
 
 type EmbedMetadataOptions struct {
 	// Command Line Arguments
-	BookId string  `validate:"required"`
+	BookId string `validate:"required"`
 
 	// Command Line Options
-	OnlyFormats []string  // Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.
+	OnlyFormats []string // Only update metadata in files of the specified format. Specify it multiple times for multiple formats. By default, all formats are updated.
 }
 
 func (c *Calibre) EmbedMetadataHelp() string {
