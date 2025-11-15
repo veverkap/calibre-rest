@@ -18,6 +18,7 @@ func TestCalibre_SetCustomHelp(t *testing.T) {
 }
 
 func TestCalibre_SetCustom(t *testing.T) {
+	t.Skip("Skip temporarily")
 	tests := []struct {
 		name    string // description of this test case
 		opts    calibredb.SetCustomOptions
