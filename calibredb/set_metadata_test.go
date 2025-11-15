@@ -9,13 +9,8 @@ import (
 )
 
 func TestCalibre_SetMetadataHelp(t *testing.T) {
-	tempDir := os.TempDir() + "/" + t.Name()
-	defer func() { _ = os.RemoveAll(tempDir) }()
-	c := calibredb.NewCalibre(
-		calibredb.WithLibraryPath(tempDir),
-		calibredb.WithCalibreDBLocation(getCalibreDBPath()),
-	)
-
+	c, f := getTestCalibre(t.Name())
+	defer f()
 	got := c.SetMetadataHelp()
 	if got == "" {
 		t.Error("SetMetadataHelp() returned empty string")
@@ -213,12 +208,8 @@ func TestCalibre_SetMetadata(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tempDir := os.TempDir() + "/" + t.Name()
-			defer func() { _ = os.RemoveAll(tempDir) }()
-			c := calibredb.NewCalibre(
-				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation(getCalibreDBPath()),
-			)
+			c, f := getTestCalibre(t.Name())
+			defer f()
 
 			got, gotErr := c.SetMetadata(tt.opts, tt.args...)
 			if gotErr != nil {
