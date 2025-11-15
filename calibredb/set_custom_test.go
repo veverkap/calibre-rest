@@ -9,12 +9,8 @@ import (
 )
 
 func TestCalibre_SetCustomHelp(t *testing.T) {
-	tempDir := os.TempDir() + "/" + t.Name()
-	defer func() { _ = os.RemoveAll(tempDir) }()
-	c := calibredb.NewCalibre(
-		calibredb.WithLibraryPath(tempDir),
-		calibredb.WithCalibreDBLocation(getCalibreDBPath()),
-	)
+	c, f := getTestCalibre(t.Name())
+	defer f()
 
 	got := c.SetCustomHelp()
 	if got == "" {
@@ -164,12 +160,8 @@ func TestCalibre_SetCustom(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tempDir := os.TempDir() + "/" + t.Name()
-			defer func() { _ = os.RemoveAll(tempDir) }()
-			c := calibredb.NewCalibre(
-				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation(getCalibreDBPath()),
-			)
+			c, f := getTestCalibre(t.Name())
+			defer f()
 
 			got, gotErr := c.SetCustom(tt.opts, tt.args...)
 			if gotErr != nil {
