@@ -1,7 +1,6 @@
 package calibredb_test
 
 import (
-	"os"
 	"strings"
 	"testing"
 
