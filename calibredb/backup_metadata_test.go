@@ -55,12 +55,8 @@ func TestCalibre_BackupMetadata(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tempDir := os.TempDir() + "/" + t.Name()
-			defer func() { _ = os.RemoveAll(tempDir) }()
-			c := calibredb.NewCalibre(
-				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation("/Applications/calibre.app/Contents/MacOS/calibredb"),
-			)
+			c, f := getTestCalibre(t.Name())
+			defer f()
 
 			got, gotErr := c.BackupMetadata(tt.opts, tt.args...)
 			if gotErr != nil {
@@ -77,10 +73,8 @@ func TestCalibre_BackupMetadata(t *testing.T) {
 			if tt.wantErr {
 				t.Fatal("BackupMetadata() succeeded unexpectedly")
 			}
-			// If we somehow have calibredb installed and it succeeds,
-			// verify we got some output
-			if got == "" && gotErr == nil {
-				t.Error("BackupMetadata() returned empty string without error")
+			if got != "" {
+				t.Fatal("BackupMetadata() should have no response")
 			}
 		})
 	}

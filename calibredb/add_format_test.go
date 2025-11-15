@@ -53,10 +53,8 @@ func TestCalibre_AddFormat(t *testing.T) {
 			defer func() { _ = os.Remove("somefile.epub") }()
 			tempDir := os.TempDir() + "/" + t.Name()
 			defer func() { _ = os.RemoveAll(tempDir) }()
-			c := calibredb.NewCalibre(
-				calibredb.WithLibraryPath(tempDir),
-				calibredb.WithCalibreDBLocation(getCalibreDBPath()),
-			)
+			c, f := getTestCalibre(t.Name())
+			defer f()
 
 			got, gotErr := c.AddFormat(tt.opts, tt.args...)
 			if gotErr != nil {

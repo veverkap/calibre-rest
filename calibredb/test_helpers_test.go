@@ -1,14 +1,23 @@
 package calibredb_test
 
-import "os"
+import (
+	"os"
 
-// getCalibreDBPath returns the path to calibredb binary.
-// It first checks the CALIBREDB_PATH environment variable,
-// then falls back to the macOS default path.
-func getCalibreDBPath() string {
-	if path := os.Getenv("CALIBREDB_PATH"); path != "" {
-		return path
+	"github.com/veverkap/calibre-rest/calibredb"
+)
+
+func getTestCalibre(name string) (*calibredb.Calibre, func()) {
+	path := os.Getenv("CALIBREDB_PATH")
+	if path == "" {
+		path = "/Applications/calibre.app/Contents/MacOS/calibredb"
 	}
-	// Default to macOS path for local development
-	return "/Applications/calibre.app/Contents/MacOS/calibredb"
+	tempDir := os.TempDir() + "/" + name
+
+	c := calibredb.NewCalibre(
+		calibredb.WithLibraryPath(tempDir),
+		calibredb.WithCalibreDBLocation(path),
+	)
+	return c, func() {
+		_ = os.RemoveAll(tempDir)
+	}
 }
