@@ -93,8 +93,8 @@ func TestCalibre_ShowMetadata(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-		c, f := getTestCalibre(t.Name())
-		defer f()
+			c, f := getTestCalibre(t.Name())
+			defer f()
 
 			got, gotErr := c.ShowMetadata(tt.opts, tt.args...)
 			if gotErr != nil {
